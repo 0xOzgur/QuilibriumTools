@@ -11,11 +11,13 @@ cd ~/ceremonyclient/node
 echo "Downloading Binary"
 sleep 2  # Add a 2-second delay
 wget https://github.com/QuilibriumNetwork/ceremonyclient/releases/download/v1.4.17/node-1.4.17-linux-amd64.bin
+ls
+mv node*.bin node
 
 # Make the file executable
 echo "Making the Binary executable"
 sleep 2  # Add a 2-second delay
-chmod +x node-1.4.17-linux-amd64.bin
+chmod +x node
 
 # Create Ceremonyclient Service
 echo "Creating Ceremonyclient Service"
@@ -30,7 +32,7 @@ Restart=always
 RestartSec=5s
 WorkingDirectory=/root/ceremonyclient/node
 Environment=GOEXPERIMENT=arenas
-ExecStart=/root/go/bin/node ./...
+ExecStart=/root/go/bin/node/node ./...
 
 [Install]
 WantedBy=multi-user.target
@@ -39,4 +41,4 @@ EOF
 # Run the node
 echo "Running the node"
 sleep 2  # Add a 2-second delay
-./node-1.4.17-linux-amd64.bin
+./node

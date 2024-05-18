@@ -92,4 +92,6 @@ sleep 1  # Add a 1-second delay
 service ceremonyclient start
 
 # See the logs of the ceremonyclient service
+echo "CTRL + C to exit the logs."
+sleep 5  # Add a 5-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

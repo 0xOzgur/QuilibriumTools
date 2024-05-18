@@ -96,6 +96,7 @@ EOF
 # Start the ceremonyclient service
 echo "Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
+systemctl enable ceremonyclient
 service ceremonyclient start
 
 # See the logs of the ceremonyclient service

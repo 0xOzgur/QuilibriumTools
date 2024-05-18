@@ -1,5 +1,12 @@
 #!/bin/bash  -i
 
+# Step 0: Welcome
+echo "This script is prepared by 0xOzgur.eth"
+echo "Enjoy and sit back while you are building your Quilibrium Node!"
+echo "Processing..."
+sleep 10  # Add a 5-second delay
+
+
 # Installing Go 1.20.14
 wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
 sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }

@@ -32,7 +32,7 @@ apt-cache policy docker-ce
 echo "Installing Docker"
 echo "Processing..."
 sleep 2  # Add a 2-second delay
-sudo apt install docker-ce
+sudo apt install docker-ce -y
 
 # Step 5:Download Ceremonyclient
 echo "Downloading Ceremonyclient"

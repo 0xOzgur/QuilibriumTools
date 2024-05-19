@@ -8,6 +8,7 @@ copy the all files at root folder.
     chmod u+x update.sh
 
     ./Install_Quilibrium_Service.sh
+    
 After installing your node, kindly wait for 10-15minutes then run config.sh
 
     ./config.sh

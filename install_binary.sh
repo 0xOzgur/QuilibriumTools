@@ -12,7 +12,7 @@ echo "Updating the machine"
 echo "Processing..."
 sleep 2  # Add a 2-second delay
 apt-get update
-apt-get install -y
+apt-get upgrade -y
 
 # Step 2:Download Ceremonyclient
 echo "Downloading Ceremonyclient"

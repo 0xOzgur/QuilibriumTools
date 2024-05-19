@@ -7,6 +7,14 @@ echo "Processing..."
 sleep 10  # Add a 10-second delay
 
 
+# Step 1: Update and Upgrade the Machine
+echo "Updating the machine"
+echo "Processing..."
+sleep 2  # Add a 2-second delay
+apt-get update
+apt-get upgrade -y
+
+
 # Installing Go 1.20.14
 wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
 sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }

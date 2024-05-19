@@ -28,8 +28,8 @@ fi
 if ! line_exists "listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338" .config/config.yml; then
     # Check if the line listenRESTMultiaddr: "" exists
     if line_exists "listenRESTMultiaddr: \"\"" .config/config.yml; then
-        # Substitute listenRESTMultiaddr: "" with listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8338
-        sudo sed -i 's#^listenRESTMultiaddr:.*$#listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8338#' .config/config.yml || { echo "Failed to enable gRPC! Exiting..."; exit 1; }
+        # Substitute listenRESTMultiaddr: "" with listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338
+        sudo sed -i 's#^listenRESTMultiaddr:.*$#listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338#' .config/config.yml || { echo "Failed to enable gRPC! Exiting..."; exit 1; }
     else
         # Add listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338
         echo "listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338" | sudo tee -a .config/config.yml > /dev/null || { echo "Failed to enable gRPC! Exiting..."; exit 1; }

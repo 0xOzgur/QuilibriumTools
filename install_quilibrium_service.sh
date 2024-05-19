@@ -4,7 +4,7 @@
 echo "This script is prepared by 0xOzgur.eth"
 echo "Enjoy and sit back while you are building your Quilibrium Node!"
 echo "Processing..."
-sleep 10  # Add a 5-second delay
+sleep 10  # Add a 10-second delay
 
 
 # Installing Go 1.20.14

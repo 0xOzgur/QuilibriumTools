@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Step 0: Welcome
+echo "This script is prepared by 0xOzgur.eth"
+echo "Enjoy and sit back while you are configuring grpCurl for Quilibrium Ceremony Client!"
+echo "Processing..."
+sleep 10  # Add a 10-second delay
+
+
 # Function to check if a line exists in a file
 line_exists() {
     grep -qF "$1" "$2"

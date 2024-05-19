@@ -7,27 +7,33 @@ echo "Enjoy and sit back while you are building your Quilibrium Ceremony Client!
 echo "Processing..."
 sleep 10  # Add a 10-second delay
 
+# Step 1: Update and Upgrade the Machine
+echo "Updating the machine"
+echo "Processing..."
+sleep 2  # Add a 2-second delay
+apt-get update
+apt-get install -y
 
-# Download Ceremonyclient
+# Step 2:Download Ceremonyclient
 echo "Downloading Ceremonyclient"
 sleep 2  # Add a 2-second delay
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
 
 cd ~/ceremonyclient/node
 
-# Download Binary
+# Step 3:Download Binary
 echo "Downloading Binary"
 sleep 2  # Add a 2-second delay
 wget https://github.com/QuilibriumNetwork/ceremonyclient/releases/download/v1.4.17/node-1.4.17-linux-amd64.bin
 ls
 mv node*.bin node
 
-# Make the file executable
+# Step 4:Make the file executable
 echo "Making the Binary executable"
 sleep 2  # Add a 2-second delay
 chmod +x node
 
-# Create Ceremonyclient Service
+# Step 5:Create Ceremonyclient Service
 echo "Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
@@ -45,7 +51,7 @@ ExecStart=/root/ceremonyclient/node/node
 WantedBy=multi-user.target
 EOF
 
-# Start the ceremonyclient service
+# Step 6:Start the ceremonyclient service
 echo "Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 systemctl enable ceremonyclient

@@ -14,7 +14,7 @@ line_exists() {
 
 # Step 1: Enable gRPC
 echo "Enabling gRPC..."
-cd "$HOME/ceremonyclient/node" || { echo "Failed to change directory to ~/ceremonyclient/node! Exiting..."; exit 1; }
+cd "$HOME/ceremonyclient/" || { echo "Failed to change directory to ~/ceremonyclient/node! Exiting..."; exit 1; }
 
 # Check if the line listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337 exists
 if ! line_exists "listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337" .config/config.yml; then

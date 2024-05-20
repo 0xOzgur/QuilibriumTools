@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ~
 
 # Step 0: Welcome
 echo "This script is prepared by 0xOzgur.eth"

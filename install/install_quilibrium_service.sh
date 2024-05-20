@@ -1,5 +1,7 @@
 #!/bin/bash  -i
 
+cd ~
+
 # Step 0: Welcome
 echo "This script is prepared by 0xOzgur.eth"
 echo "Enjoy and sit back while you are building your Quilibrium Node!"

@@ -34,23 +34,38 @@ echo "Processing..."
 sleep 2  # Add a 2-second delay
 sudo apt install docker-ce -y
 
-# Step 5:Download Ceremonyclient
+# Step 5: Adjust network buffer sizes
+echo "Adjusting network buffer sizes..."
+if grep -q "^net.core.rmem_max=600000000$" /etc/sysctl.conf; then
+  echo "net.core.rmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
+else
+  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.rmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
+fi
+if grep -q "^net.core.wmem_max=600000000$" /etc/sysctl.conf; then
+  echo "net.core.wmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
+else
+  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.wmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
+fi
+sudo sysctl -p
+
+
+# Step 6:Download Ceremonyclient
 echo "Downloading Ceremonyclient"
 sleep 2  # Add a 2-second delay
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
 cd ~/ceremonyclient
 
-# Step 5:Build Docker Container
+# Step 7:Build Docker Container
 echo "Building Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
 docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium -t quilibrium:1.4.17 .
 
-# Step 5:Run Ceremonyclient Container
+# Step 8:Run Ceremonyclient Container
 echo "Running Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
 docker compose up -d
 
-# Step 5:Logs Ceremonyclient Container
+# Step 9:Logs Ceremonyclient Container
 echo "Welcome to Quilibrium Ceremonyclient"
 echo "CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay

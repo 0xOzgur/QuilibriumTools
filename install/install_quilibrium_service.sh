@@ -14,6 +14,20 @@ sleep 2  # Add a 2-second delay
 apt-get update
 apt-get upgrade -y
 
+# Step 2: Adjust network buffer sizes
+echo "Adjusting network buffer sizes..."
+if grep -q "^net.core.rmem_max=600000000$" /etc/sysctl.conf; then
+  echo "net.core.rmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
+else
+  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.rmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
+fi
+if grep -q "^net.core.wmem_max=600000000$" /etc/sysctl.conf; then
+  echo "net.core.wmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
+else
+  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.wmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
+fi
+sudo sysctl -p
+
 
 # Installing Go 1.20.14
 wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz

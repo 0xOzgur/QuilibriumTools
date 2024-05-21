@@ -116,14 +116,15 @@ ExecStart=/root/go/bin/node ./...
 [Install]
 WantedBy=multi-user.target
 EOF
+systemctl enable ceremonyclient
 
 # Start the ceremonyclient service
 echo "Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
-systemctl enable ceremonyclient
 service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "CTRL + C to exit the logs."
+echo "Welcome to Quilibrium Ceremonyclient"
+echo "Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

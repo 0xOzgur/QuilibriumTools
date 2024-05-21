@@ -68,6 +68,6 @@ docker compose up -d
 
 # Step 9:Logs Ceremonyclient Container
 echo "Welcome to Quilibrium Ceremonyclient"
-echo "CTRL + C to exit the logs."
+echo "Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 docker compose logs -f -n, --tail 100

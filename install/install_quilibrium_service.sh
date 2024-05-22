@@ -3,15 +3,15 @@
 cd ~
 
 # Step 0: Welcome
-echo "This script is prepared by 0xOzgur.eth"
-echo "Enjoy and sit back while you are building your Quilibrium Node!"
-echo "Processing..."
+echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
+echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
 
 # Step 1: Update and Upgrade the Machine
 echo "Updating the machine"
-echo "Processing..."
+echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 apt-get update
 apt-get upgrade -y
@@ -39,7 +39,7 @@ sudo rm go1.20.14.linux-amd64.tar.gz || { echo "Failed to remove downloaded arch
 
 
 # Step 4: Set Go environment variables
-echo "Setting Go environment variables..."
+echo "⏳Setting Go environment variables..."
 sleep 5  # Add a 5-second delay
 
 # Check if GOROOT is already set
@@ -67,7 +67,7 @@ else
 fi
 
 # Source .bashrc to apply changes
-echo "Sourcing .bashrc to apply changes"
+echo "⏳Sourcing .bashrc to apply changes"
 source ~/.bashrc
 sleep 5  # Add a 5-second delay
 
@@ -76,30 +76,30 @@ go version
 sleep 5  # Add a 5-second delay
 
 # Install gRPCurl
-echo "Installing gRPCurl"
+echo "⏳Installing gRPCurl"
 sleep 1  # Add a 1-second delay
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 
 # Download Ceremonyclient
-echo "Downloading Ceremonyclient"
+echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
 
 # Build Ceremonyclient
-echo "Building Ceremonyclient"
+echo "⏳Building Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~/ceremonyclient/node
 GOEXPERIMENT=arenas go install ./...
 
 # Build Ceremonyclient qClient
-echo "Building qCiient"
+echo "⏳Building qCiient"
 sleep 1  # Add a 1-second delay
 cd ~/ceremonyclient/client
 GOEXPERIMENT=arenas go build -o qclient main.go
 
 # Create Ceremonyclient Service
-echo "Creating Ceremonyclient Service"
+echo "⏳Creating Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
@@ -119,12 +119,12 @@ EOF
 systemctl enable ceremonyclient
 
 # Start the ceremonyclient service
-echo "Starting Ceremonyclient Service"
+echo "✅Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
 service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "Welcome to Quilibrium Ceremonyclient"
-echo "Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
+echo "🎉Welcome to Quilibrium Ceremonyclient"
+echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

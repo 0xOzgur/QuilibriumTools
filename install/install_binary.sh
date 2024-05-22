@@ -3,14 +3,14 @@
 cd ~
 
 # Step 0: Welcome
-echo "This script is prepared by 0xOzgur.eth"
-echo "Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
-echo "Processing..."
+echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "⏳Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
+echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
 # Step 1: Update and Upgrade the Machine
 echo "Updating the machine"
-echo "Processing..."
+echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 apt-get update
 apt-get upgrade -y
@@ -30,26 +30,26 @@ fi
 sudo sysctl -p
 
 # Step 3:Download Ceremonyclient
-echo "Downloading Ceremonyclient"
+echo "⏳Downloading Ceremonyclient"
 sleep 2  # Add a 2-second delay
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
 
 cd ~/ceremonyclient/node
 
 # Step 4:Download Binary
-echo "Downloading Binary"
+echo "⏳Downloading Binary"
 sleep 2  # Add a 2-second delay
 wget https://github.com/QuilibriumNetwork/ceremonyclient/releases/download/v1.4.17/node-1.4.17-linux-amd64.bin
 ls
 mv node*.bin node
 
 # Step 5:Make the file executable
-echo "Making the Binary executable"
+echo "⏳Making the Binary executable"
 sleep 2  # Add a 2-second delay
 chmod +x node
 
 # Step 6:Create Ceremonyclient Service
-echo "Creating Ceremonyclient Service"
+echo "⏳Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
@@ -67,13 +67,13 @@ WantedBy=multi-user.target
 EOF
 
 # Step 7:Start the ceremonyclient service
-echo "Starting Ceremonyclient Service"
+echo "✅SStarting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 systemctl enable ceremonyclient
 service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "Welcome to Quilibrium Ceremonyclient"
-echo "Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
+echo "🎉Welcome to Quilibrium Ceremonyclient"
+echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

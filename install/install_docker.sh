@@ -3,21 +3,21 @@
 cd ~
 
 # Step 0: Welcome
-echo "This script is prepared by 0xOzgur.eth"
-echo "Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
-echo "Processing..."
+echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "⏳Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
+echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
 # Step 1: Update and Upgrade the Machine
 echo "Updating the machine"
-echo "Processing..."
+echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 apt-get update
 apt-get upgrade -y
 
 # Step 2: Install prerequisite 
 echo "Installing prerequisite"
-echo "Processing..."
+echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 
@@ -51,23 +51,23 @@ sudo sysctl -p
 
 
 # Step 6:Download Ceremonyclient
-echo "Downloading Ceremonyclient"
+echo "⏳Downloading Ceremonyclient"
 sleep 2  # Add a 2-second delay
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
 cd ~/ceremonyclient
 
 # Step 7:Build Docker Container
-echo "Building Ceremonyclient Container"
+echo "⏳Building Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
 docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium -t quilibrium:1.4.17 .
 
 # Step 8:Run Ceremonyclient Container
-echo "Running Ceremonyclient Container"
+echo "✅Running Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
 docker compose up -d
 
 # Step 9:Logs Ceremonyclient Container
-echo "Welcome to Quilibrium Ceremonyclient"
-echo "Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
+echo "🎉Welcome to Quilibrium Ceremonyclient"
+echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 docker compose logs -f -n, --tail 100

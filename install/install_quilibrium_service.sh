@@ -13,8 +13,10 @@ sleep 10  # Add a 10-second delay
 echo "Updating the machine"
 echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
-apt-get update
-apt-get upgrade -y
+apt update
+apt upgrade -y
+apt install sudo -y
+apt apt install git -y
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."

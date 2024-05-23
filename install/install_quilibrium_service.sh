@@ -16,7 +16,7 @@ sleep 2  # Add a 2-second delay
 apt update
 apt upgrade -y
 apt install sudo -y
-apt apt install git -y
+apt install git -y
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."

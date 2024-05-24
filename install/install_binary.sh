@@ -67,7 +67,7 @@ WantedBy=multi-user.target
 EOF
 
 # Step 7:Start the ceremonyclient service
-echo "✅SStarting Ceremonyclient Service"
+echo "✅Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 systemctl enable ceremonyclient
 service ceremonyclient start

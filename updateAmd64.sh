@@ -11,9 +11,9 @@ service ceremonyclient stop
 
 # Step 1:Download Binary
 echo "⏳ Downloading New Release v1.4.18"
+cd  ~/ceremonyclient
 git pull
 git checkout release
-mv node-1.4.18-linux-amd64 node
 
 # Step 3:Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
@@ -28,7 +28,7 @@ Type=simple
 Restart=always
 RestartSec=5s
 WorkingDirectory=/root/ceremonyclient/node
-ExecStart=/root/ceremonyclient/node/node
+ExecStart=/root/ceremonyclient/node/node-1.4.18-linux-amd64
 
 [Install]
 WantedBy=multi-user.target

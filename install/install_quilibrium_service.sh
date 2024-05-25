@@ -1,7 +1,6 @@
 #!/bin/bash  -i
 
 cd ~
-
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth"
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
@@ -33,7 +32,7 @@ fi
 sudo sysctl -p
 
 
-# Installing Go 1.20.14
+# Step 3:Installing Go 1.20.14
 wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
 sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
 sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
@@ -68,41 +67,52 @@ else
     echo "PATH set in ~/.bashrc."
 fi
 
-# Source .bashrc to apply changes
+# Step 5: Source .bashrc to apply changes
 echo "⏳Sourcing .bashrc to apply changes"
 source ~/.bashrc
 sleep 5  # Add a 5-second delay
 
-# Check GO Version
+# Step 6: Check GO Version
 go version
 sleep 5  # Add a 5-second delay
 
-# Install gRPCurl
+# Step 7:Install gRPCurl
 echo "⏳Installing gRPCurl"
 sleep 1  # Add a 1-second delay
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 
-# Download Ceremonyclient
+# Step 8:Download Ceremonyclient
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
+git checkout release
 
-# Build Ceremonyclient
-echo "⏳Building Ceremonyclient"
-sleep 1  # Add a 1-second delay
-cd ~/ceremonyclient/node
-GOEXPERIMENT=arenas go install ./...
-
-# Build Ceremonyclient qClient
+# Step 9: Build Ceremonyclient qClient
 echo "⏳Building qCiient"
 sleep 1  # Add a 1-second delay
 cd ~/ceremonyclient/client
 GOEXPERIMENT=arenas go build -o qclient main.go
 
-# Create Ceremonyclient Service
-echo "⏳Creating Ceremonyclient Service"
-sleep 1  # Add a 1-second delay
+# Get the system architecture
+ARCH=$(uname -m)
+
+# Step10.1:Determine the ExecStart line based on the architecture
+if [ "$ARCH" = "x86_64" ]; then
+    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-amd64"
+elif [ "$ARCH" = "aarch64" ]; then
+    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-arm64"
+elif [ "$ARCH" = "arm64" ]; then
+    EXEC_START="/root/ceremonyclient/node/node-1.4.18-darwin-arm64"
+else
+    echo "Unsupported architecture: $ARCH"
+    exit 1
+fi
+
+# Step10.2:Create Ceremonyclient Service
+echo "⏳ Re-Creating Ceremonyclient Service"
+sleep 2  # Add a 2-second delay
+rm /lib/systemd/system/ceremonyclient.service
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -112,8 +122,7 @@ Type=simple
 Restart=always
 RestartSec=5s
 WorkingDirectory=/root/ceremonyclient/node
-Environment=GOEXPERIMENT=arenas
-ExecStart=/root/go/bin/node ./...
+ExecStart=$EXEC_START
 
 [Install]
 WantedBy=multi-user.target

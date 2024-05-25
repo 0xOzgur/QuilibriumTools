@@ -28,7 +28,7 @@ Type=simple
 Restart=always
 RestartSec=5s
 WorkingDirectory=/root/ceremonyclient/node
-ExecStart=/root/ceremonyclient/node/node
+ExecStart=/root/ceremonyclient/node/node-1.4.18-linux-amd64
 
 [Install]
 WantedBy=multi-user.target

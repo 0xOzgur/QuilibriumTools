@@ -13,7 +13,6 @@ service ceremonyclient stop
 echo "⏳ Downloading New Release v1.4.18"
 git pull
 git checkout release
-mv node-1.4.18-linux-amd64 node
 
 # Step 3:Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"

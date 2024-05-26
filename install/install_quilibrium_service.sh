@@ -2,8 +2,9 @@
 
 cd ~
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
+echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
@@ -47,6 +48,9 @@ fi
 cd ~/ceremonyclient/
 git checkout release
 
+# Set the version number
+VERSION="1.4.18"
+
 # Get the system architecture
 ARCH=$(uname -m)
 
@@ -58,11 +62,11 @@ NODE_PATH="$HOME/ceremonyclient/node"
 
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="$NODE_PATH/node-1.4.18-linux-amd64"
+    EXEC_START="$NODE_PATH/node-$VERSION-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="$NODE_PATH/node-1.4.18-linux-arm64"
+    EXEC_START="$NODE_PATH/node-$VERSION-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="$NODE_PATH/node-1.4.18-darwin-arm64"
+    EXEC_START="$NODE_PATH/node-$VERSION-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1

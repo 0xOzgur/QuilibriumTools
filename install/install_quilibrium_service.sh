@@ -55,6 +55,7 @@ VERSION="1.4.18"
 ARCH=$(uname -m)
 
 # Get the current user's home directory
+
 HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path

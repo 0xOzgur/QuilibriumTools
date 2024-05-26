@@ -64,7 +64,7 @@ fi
 # Step10.2:Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-rm /lib/systemd/system/ceremonyclient.service
+sudo rm /lib/systemd/system/ceremonyclient.service
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service

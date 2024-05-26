@@ -2,7 +2,9 @@
 
 cd ~
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth"
+echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
+echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
@@ -12,10 +14,9 @@ sleep 10  # Add a 10-second delay
 echo "Updating the machine"
 echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
-apt update
-apt upgrade -y
-apt install sudo -y #for non root Debian OS 
-apt install git -y
+sudo apt update
+sudo apt upgrade -y
+sudo apt install git -y
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."
@@ -36,26 +37,37 @@ sudo sysctl -p
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
-git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
+if [ -d "ceremonyclient" ]; then
+  echo "Directory ceremonyclient already exists, skipping git clone..."
+else
+  until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git; do
+    echo "Git clone failed, retrying..."
+    sleep 2
+  done
+fi
 cd ~/ceremonyclient/
 git checkout release
+
+# Set the version number
+VERSION="1.4.18"
 
 # Get the system architecture
 ARCH=$(uname -m)
 
 # Get the current user's home directory
-#HOME_DIR=$(eval echo ~$USER)
+
+HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
-#PATH="$HOME_DIR/ceremonyclient/node"
+NODE_PATH="$HOME/ceremonyclient/node"
 
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-amd64"
+    EXEC_START="$NODE_PATH/node-$VERSION-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-arm64"
+    EXEC_START="$NODE_PATH/node-$VERSION-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-darwin-arm64"
+    EXEC_START="$NODE_PATH/node-$VERSION-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
@@ -64,7 +76,11 @@ fi
 # Step10.2:Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-rm /lib/systemd/system/ceremonyclient.service
+# Check if the ceremonyclient.service file exists
+if [ -f /lib/systemd/system/ceremonyclient.service ]; then
+  # If it exists, remove it
+  sudo rm /lib/systemd/system/ceremonyclient.service
+fi
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -79,12 +95,13 @@ ExecStart=$EXEC_START
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable ceremonyclient
+sudo systemctl daemon-reload
+sudo systemctl enable ceremonyclient
 
 # Start the ceremonyclient service
 echo "✅Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
-service ceremonyclient start
+sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
 echo "🎉Welcome to Quilibrium Ceremonyclient"

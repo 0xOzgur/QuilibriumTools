@@ -32,8 +32,30 @@ else
 fi
 sudo sysctl -p
 
+# Step 3: Check if directory ~/ceremonyclient exists and remove it
+if [ -d ~/ceremonyclient ]; then
+    # Check if backup directory ~/backup/qnode_keys exists, if not create it
+    if [ ! -d ~/backup/qnode_keys ]; then
+        mkdir -p ~/backup/qnode_keys
+    fi
+    
+    # Check if files exist, then backup
+    if [ -f ~/ceremonyclient/node/.config/keys.yml ]; then
+        cp ~/ceremonyclient/node/.config/keys.yml ~/backup/qnode_keys/
+        echo "✅ Backup of keys.yml created in ~/backup/qnode_keys folder"
+    fi
+    
+    if [ -f ~/ceremonyclient/node/.config/config.yml ]; then
+        cp ~/ceremonyclient/node/.config/config.yml ~/backup/qnode_keys/
+        echo "✅ Backup of config.yml created in ~/backup/qnode_keys folder"
+    fi
+    
+    # Remove existing directory ~/ceremonyclient
+    echo "🗑️ Removing existing directory ~/ceremonyclient..."
+    rm -rf ~/ceremonyclient
+fi
 
-# Step 8:Download Ceremonyclient
+# Step 4:Download Ceremonyclient
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
@@ -54,14 +76,14 @@ VERSION="1.4.18"
 # Get the system architecture
 ARCH=$(uname -m)
 
-# Get the current user's home directory
 
+# Step 5:Determine the ExecStart line based on the architecture
+# Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
 
-# Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
     EXEC_START="$NODE_PATH/node-$VERSION-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
@@ -73,14 +95,21 @@ else
     exit 1
 fi
 
-# Step10.2:Create Ceremonyclient Service
+# Step 6:Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-# Check if the ceremonyclient.service file exists
-if [ -f /lib/systemd/system/ceremonyclient.service ]; then
-  # If it exists, remove it
-  sudo rm /lib/systemd/system/ceremonyclient.service
+
+
+# Check if the file exists before attempting to remove it
+if [ -f "/lib/systemd/system/ceremonyclient.service" ]; then
+    # If the file exists, remove it
+    rm /lib/systemd/system/ceremonyclient.service
+    echo "ceremonyclient.service file removed."
+else
+    # If the file does not exist, inform the user
+    echo "ceremonyclient.service file does not exist. No action taken."
 fi
+
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -98,12 +127,12 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
 
-# Start the ceremonyclient service
+# Step 7: Start the ceremonyclient service
 echo "✅Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
 sudo service ceremonyclient start
 
-# See the logs of the ceremonyclient service
+# Step 8: See the logs of the ceremonyclient service
 echo "🎉Welcome to Quilibrium Ceremonyclient"
 echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay

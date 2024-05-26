@@ -1,5 +1,8 @@
 #!/bin/bash  -i
 
+# Ask for the sudo password upfront
+sudo -v
+
 cd ~
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth"

@@ -1,11 +1,9 @@
 #!/bin/bash  -i
 
-# Ask for the sudo password upfront
-sudo -v
-
 cd ~
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
@@ -17,7 +15,6 @@ echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 sudo apt update
 sudo apt upgrade -y
-sudo apt install sudo -y 
 sudo apt install git -y
 
 # Step 2: Adjust network buffer sizes

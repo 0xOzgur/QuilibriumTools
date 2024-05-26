@@ -3,6 +3,7 @@
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.18!"
+echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
@@ -19,18 +20,18 @@ git checkout release
 ARCH=$(uname -m)
 
 # Get the current user's home directory
-HOME_DIR=$(eval echo ~$USER)
+HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
-PATH="$HOME_DIR/ceremonyclient/node"
+NODE_PATH="$HOME/ceremonyclient/node"
 
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="$PATH/node-1.4.18-linux-amd64"
+    EXEC_START="$NODE_PATH/node-1.4.18-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="$PATH/node-1.4.18-linux-arm64"
+    EXEC_START="$NODE_PATH/node-1.4.18-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="$PATH/node-1.4.18-darwin-arm64"
+    EXEC_START="$NODE_PATH/node-1.4.18-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
@@ -46,9 +47,9 @@ sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" /lib/systemd/system/ceremony
 # Step 4:Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-systemctl daemon-reload
-systemctl enable ceremonyclient
-service ceremonyclient start
+sudo systemctl daemon-reload
+sudo systemctl enable ceremonyclient
+sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
 echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.18"

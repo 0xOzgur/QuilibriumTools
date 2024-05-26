@@ -82,12 +82,13 @@ ExecStart=$EXEC_START
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable ceremonyclient
+sudo systemctl daemon-reload
+sudo systemctl enable ceremonyclient
 
 # Start the ceremonyclient service
 echo "✅Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
-service ceremonyclient start
+sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
 echo "🎉Welcome to Quilibrium Ceremonyclient"

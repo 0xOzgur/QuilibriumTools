@@ -34,7 +34,7 @@ else
 fi
 sudo sysctl -p
 
-# Step 3: Check if directory ~/ceremonyclient exists and remove it
+# Step 3: Check if directory ~/ceremonyclient exists, download from github 
 if [ -d ~/ceremonyclient ]; then
     # Check if backup directory ~/backup/qnode_keys exists, if not create it
     if [ ! -d ~/backup/qnode_keys ]; then
@@ -51,10 +51,6 @@ if [ -d ~/ceremonyclient ]; then
         cp ~/ceremonyclient/node/.config/config.yml ~/backup/qnode_keys/
         echo "✅ Backup of config.yml created in ~/backup/qnode_keys folder"
     fi
-    
-    # Remove existing directory ~/ceremonyclient
-    echo "🗑️ Removing existing directory ~/ceremonyclient..."
-    rm -rf ~/ceremonyclient
 fi
 
 # Step 4:Download Ceremonyclient

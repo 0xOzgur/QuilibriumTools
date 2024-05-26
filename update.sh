@@ -12,6 +12,9 @@ cd  ~/ceremonyclient
 git pull
 git checkout release
 
+# Set the version number
+VERSION="1.4.18"
+
 # Get the system architecture
 ARCH=$(uname -m)
 
@@ -23,11 +26,11 @@ NODE_PATH="$HOME/ceremonyclient/node"
 
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="$NODE_PATH/node-1.4.18-linux-amd64"
+    EXEC_START="$NODE_PATH/node-$VERSION-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="$NODE_PATH/node-1.4.18-linux-arm64"
+    EXEC_START="$NODE_PATH/node-$VERSION-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="$NODE_PATH/node-1.4.18-darwin-arm64"
+    EXEC_START="$NODE_PATH/node-$VERSION-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1

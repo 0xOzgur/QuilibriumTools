@@ -36,7 +36,10 @@ sudo sysctl -p
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
-git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
+until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git; do
+  echo "Git clone failed, retrying..."
+  sleep 2
+done
 cd ~/ceremonyclient/
 git checkout release
 

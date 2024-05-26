@@ -44,10 +44,10 @@ git checkout release
 ARCH=$(uname -m)
 
 # Get the current user's home directory
-HOME_DIR=$(eval echo ~$USER)
+HOME=$(eval echo ~$USER)
 
 # Use the home directory in the path
-PATH="$HOME_DIR/ceremonyclient/node"
+PATH="$HOME/ceremonyclient/node"
 
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then

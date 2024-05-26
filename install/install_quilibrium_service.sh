@@ -14,7 +14,7 @@ echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 apt update
 apt upgrade -y
-apt install sudo -y #for non root Debian OS 
+#apt install sudo -y #for non root Debian OS 
 apt install git -y
 
 # Step 2: Adjust network buffer sizes
@@ -22,14 +22,14 @@ echo "Adjusting network buffer sizes..."
 if grep -q "^net.core.rmem_max=600000000$" /etc/sysctl.conf; then
   echo "net.core.rmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
 else
-  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.rmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
+  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.rmem_max=600000000" | tee -a /etc/sysctl.conf > /dev/null
 fi
 if grep -q "^net.core.wmem_max=600000000$" /etc/sysctl.conf; then
   echo "net.core.wmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
 else
-  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.wmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
+  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.wmem_max=600000000" | tee -a /etc/sysctl.conf > /dev/null
 fi
-sudo sysctl -p
+sysctl -p
 
 
 # Step 8:Download Ceremonyclient
@@ -65,7 +65,7 @@ fi
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 rm /lib/systemd/system/ceremonyclient.service
-sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
+tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
 
@@ -90,4 +90,4 @@ service ceremonyclient start
 echo "🎉Welcome to Quilibrium Ceremonyclient"
 echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
-sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat
+journalctl -u ceremonyclient.service -f --no-hostname -o cat

@@ -1,7 +1,8 @@
-#!/bin/bash  -i
+#!/bin/bash
 
 cd ~
 # Step 0: Welcome
+
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
@@ -9,14 +10,15 @@ echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
-
 # Step 1: Update and Upgrade the Machine
 echo "Updating the machine"
 echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
+
 sudo apt update
 sudo apt upgrade -y
 sudo apt install git -y
+
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."
@@ -76,7 +78,6 @@ VERSION="1.4.18"
 # Get the system architecture
 ARCH=$(uname -m)
 
-
 # Step 5:Determine the ExecStart line based on the architecture
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
@@ -98,7 +99,6 @@ fi
 # Step 6:Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-
 
 # Check if the file exists before attempting to remove it
 if [ -f "/lib/systemd/system/ceremonyclient.service" ]; then
@@ -124,6 +124,7 @@ ExecStart=$EXEC_START
 [Install]
 WantedBy=multi-user.target
 EOF
+
 sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
 

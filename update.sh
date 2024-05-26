@@ -1,17 +1,13 @@
 #!/bin/bash
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth"
-echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.18!"
-echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
-echo "⏳Processing..."
-sleep 10  # Add a 10-second delay
+echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth for scalepod.io"
+sleep 2  # Add a 2-second delay
 
 # Stop the ceremonyclient service
 service ceremonyclient stop
 
 # Step 1:Download Binary
-echo "⏳ Downloading New Release v1.4.18"
 cd  ~/ceremonyclient
 git pull
 git checkout release
@@ -37,22 +33,10 @@ else
     exit 1
 fi
 
-# Step 3:Re-Create Ceremonyclient Service
-echo "⏳ Re-Creating Ceremonyclient Service"
-sleep 2  # Add a 2-second delay
-
-# Update the ExecStart line in the service file
+# Step 3: Update the ExecStart line in the Ceremonyclient Service file
 sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" /lib/systemd/system/ceremonyclient.service
 
 # Step 4:Start the ceremonyclient service
-echo "✅ Starting Ceremonyclient Service"
-sleep 2  # Add a 2-second delay
 sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
 sudo service ceremonyclient start
-
-# See the logs of the ceremonyclient service
-echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.18"
-echo "⏳ Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
-sleep 5  # Add a 5-second delay
-sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

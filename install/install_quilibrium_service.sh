@@ -90,4 +90,4 @@ service ceremonyclient start
 echo "🎉Welcome to Quilibrium Ceremonyclient"
 echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
-journalctl -u ceremonyclient.service -f --no-hostname -o cat
+sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

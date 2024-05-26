@@ -33,7 +33,21 @@ fi
 # Step 3:Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" /lib/systemd/system/ceremonyclient.service
+rm /lib/systemd/system/ceremonyclient.service
+sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
+[Unit]
+Description=Ceremony Client Go App Service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+WorkingDirectory=/root/ceremonyclient/node
+ExecStart=$EXEC_START
+
+[Install]
+WantedBy=multi-user.target
+EOF
 
 # Step 4:Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"

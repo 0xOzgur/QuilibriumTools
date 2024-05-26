@@ -7,13 +7,8 @@ echo "The script is prepared for Ubuntu machines. If you are using another opera
 echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
-sleep 10  # Add a 10-second delay
-
 
 # Step 1: Update and Upgrade the Machine
-echo "Updating the machine"
-echo "⏳Processing..."
-sleep 2  # Add a 2-second delay
 sudo apt update
 sudo apt upgrade -y
 sudo apt install git -y
@@ -32,8 +27,7 @@ else
 fi
 sudo sysctl -p
 
-
-# Step 8:Download Ceremonyclient
+# Step 3:Download Ceremonyclient
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
@@ -57,7 +51,7 @@ HOME=$(eval echo ~$HOME_DIR)
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
 
-# Step10.1:Determine the ExecStart line based on the architecture
+# Step4:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
     EXEC_START="$NODE_PATH/node-1.4.18-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
@@ -69,10 +63,12 @@ else
     exit 1
 fi
 
-# Step10.2:Create Ceremonyclient Service
-echo "⏳ Re-Creating Ceremonyclient Service"
-sleep 2  # Add a 2-second delay
-sudo rm /lib/systemd/system/ceremonyclient.service
+# Step5:Create Ceremonyclient Service
+# Check if the ceremonyclient.service file exists
+if [ -f /lib/systemd/system/ceremonyclient.service ]; then
+  # If it exists, remove it
+  sudo rm /lib/systemd/system/ceremonyclient.service
+fi
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -91,12 +87,4 @@ sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
 
 # Start the ceremonyclient service
-echo "✅Starting Ceremonyclient Service"
-sleep 1  # Add a 1-second delay
 sudo service ceremonyclient start
-
-# See the logs of the ceremonyclient service
-echo "🎉Welcome to Quilibrium Ceremonyclient"
-echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
-sleep 5  # Add a 5-second delay
-sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

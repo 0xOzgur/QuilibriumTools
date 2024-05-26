@@ -75,7 +75,11 @@ fi
 # Step10.2:Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-sudo rm /lib/systemd/system/ceremonyclient.service
+# Check if the ceremonyclient.service file exists
+if [ -f /lib/systemd/system/ceremonyclient.service ]; then
+  # If it exists, remove it
+  sudo rm /lib/systemd/system/ceremonyclient.service
+fi
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service

@@ -43,13 +43,19 @@ git checkout release
 # Get the system architecture
 ARCH=$(uname -m)
 
+# Get the current user's home directory
+HOME_DIR=$(eval echo ~$USER)
+
+# Use the home directory in the path
+PATH="$HOME_DIR/ceremonyclient/node"
+
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-amd64"
+    EXEC_START="$PATH/node-1.4.18-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-arm64"
+    EXEC_START="$PATH/node-1.4.18-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-darwin-arm64"
+    EXEC_START="$PATH/node-1.4.18-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1

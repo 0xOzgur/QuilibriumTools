@@ -14,7 +14,7 @@ echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 apt update
 apt upgrade -y
-apt install sudo -y
+apt install sudo -y #for non root Debian OS users
 apt install git -y
 
 # Step 2: Adjust network buffer sizes

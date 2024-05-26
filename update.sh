@@ -18,13 +18,19 @@ git checkout release
 # Get the system architecture
 ARCH=$(uname -m)
 
-# Determine the ExecStart line based on the architecture
+# Get the current user's home directory
+HOME_DIR=$(eval echo ~$USER)
+
+# Use the home directory in the path
+PATH="$HOME_DIR/ceremonyclient/node"
+
+# Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-amd64"
+    EXEC_START="$PATH/node-1.4.18-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-arm64"
+    EXEC_START="$PATH/node-1.4.18-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="/root/ceremonyclient/node/node-1.4.18-darwin-arm64"
+    EXEC_START="$PATH/node-1.4.18-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
@@ -33,21 +39,9 @@ fi
 # Step 3:Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-rm /lib/systemd/system/ceremonyclient.service
-sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
-[Unit]
-Description=Ceremony Client Go App Service
 
-[Service]
-Type=simple
-Restart=always
-RestartSec=5s
-WorkingDirectory=/root/ceremonyclient/node
-ExecStart=$EXEC_START
-
-[Install]
-WantedBy=multi-user.target
-EOF
+# Update the ExecStart line in the service file
+sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" /lib/systemd/system/ceremonyclient.service
 
 # Step 4:Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"

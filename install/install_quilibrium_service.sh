@@ -51,11 +51,11 @@ ARCH=$(uname -m)
 
 # Step10.1:Determine the ExecStart line based on the architecture
 if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="$PATH/node-1.4.18-linux-amd64"
+    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-amd64"
 elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="$PATH/node-1.4.18-linux-arm64"
+    EXEC_START="/root/ceremonyclient/node/node-1.4.18-linux-arm64"
 elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="$PATH/node-1.4.18-darwin-arm64"
+    EXEC_START="/root/ceremonyclient/node/node-1.4.18-darwin-arm64"
 else
     echo "Unsupported architecture: $ARCH"
     exit 1
@@ -74,7 +74,7 @@ Type=simple
 Restart=always
 RestartSec=5s
 WorkingDirectory=/root/ceremonyclient/node
-ExecStart=/root/ceremonyclient/node/$PATH
+ExecStart=$EXEC_START
 
 [Install]
 WantedBy=multi-user.target

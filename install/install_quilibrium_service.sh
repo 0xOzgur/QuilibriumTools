@@ -1,22 +1,19 @@
-#!/bin/bash  -i
+#!/bin/bash
 
 cd ~
 
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth"
-echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
+echo "⏳Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
-
 
 # Step 1: Update and Upgrade the Machine
 echo "Updating the machine"
 echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
-apt update
-apt upgrade -y
-apt install sudo -y
-apt install git -y
+apt-get update
+apt-get upgrade -y
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."
@@ -32,77 +29,28 @@ else
 fi
 sudo sysctl -p
 
-
-# Installing Go 1.20.14
-wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
-sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
-sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
-sudo rm go1.20.14.linux-amd64.tar.gz || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
-
-
-# Step 4: Set Go environment variables
-echo "⏳Setting Go environment variables..."
-sleep 5  # Add a 5-second delay
-
-# Check if GOROOT is already set
-if grep -q 'GOROOT=/usr/local/go' ~/.bashrc; then
-    echo "GOROOT already set in ~/.bashrc."
-else
-    echo 'GOROOT=/usr/local/go' >> ~/.bashrc
-    echo "GOROOT set in ~/.bashrc."
-fi
-
-# Check if GOPATH is already set
-if grep -q "GOPATH=$HOME/go" ~/.bashrc; then
-    echo "GOPATH already set in ~/.bashrc."
-else
-    echo "GOPATH=$HOME/go" >> ~/.bashrc
-    echo "GOPATH set in ~/.bashrc."
-fi
-
-# Check if PATH is already set
-if grep -q 'PATH=$GOPATH/bin:$GOROOT/bin:$PATH' ~/.bashrc; then
-    echo "PATH already set in ~/.bashrc."
-else
-    echo 'PATH=$GOPATH/bin:$GOROOT/bin:$PATH' >> ~/.bashrc
-    echo "PATH set in ~/.bashrc."
-fi
-
-# Source .bashrc to apply changes
-echo "⏳Sourcing .bashrc to apply changes"
-source ~/.bashrc
-sleep 5  # Add a 5-second delay
-
-# Check GO Version
-go version
-sleep 5  # Add a 5-second delay
-
-# Install gRPCurl
-echo "⏳Installing gRPCurl"
-sleep 1  # Add a 1-second delay
-go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
-
-# Download Ceremonyclient
+# Step 3:Download Ceremonyclient
 echo "⏳Downloading Ceremonyclient"
-sleep 1  # Add a 1-second delay
-cd ~
+sleep 2  # Add a 2-second delay
 git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
 
-# Build Ceremonyclient
-echo "⏳Building Ceremonyclient"
-sleep 1  # Add a 1-second delay
 cd ~/ceremonyclient/node
-GOEXPERIMENT=arenas go install ./...
 
-# Build Ceremonyclient qClient
-echo "⏳Building qCiient"
-sleep 1  # Add a 1-second delay
-cd ~/ceremonyclient/client
-GOEXPERIMENT=arenas go build -o qclient main.go
+# Step 4:Download Binary
+echo "⏳Downloading Binary"
+sleep 2  # Add a 2-second delay
+wget https://github.com/QuilibriumNetwork/ceremonyclient/releases/download/v1.4.17/node-1.4.17-linux-amd64.bin
+ls
+mv node*.bin node
 
-# Create Ceremonyclient Service
+# Step 5:Make the file executable
+echo "⏳Making the Binary executable"
+sleep 2  # Add a 2-second delay
+chmod +x node
+
+# Step 6:Create Ceremonyclient Service
 echo "⏳Creating Ceremonyclient Service"
-sleep 1  # Add a 1-second delay
+sleep 2  # Add a 2-second delay
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -112,17 +60,16 @@ Type=simple
 Restart=always
 RestartSec=5s
 WorkingDirectory=/root/ceremonyclient/node
-Environment=GOEXPERIMENT=arenas
-ExecStart=/root/go/bin/node ./...
+ExecStart=/root/ceremonyclient/node/node
 
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable ceremonyclient
 
-# Start the ceremonyclient service
+# Step 7:Start the ceremonyclient service
 echo "✅Starting Ceremonyclient Service"
-sleep 1  # Add a 1-second delay
+sleep 2  # Add a 2-second delay
+systemctl enable ceremonyclient
 service ceremonyclient start
 
 # See the logs of the ceremonyclient service

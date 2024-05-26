@@ -1,24 +1,12 @@
 # QuilibriumAutoInstaller
 Autoinstaller Script for Quilibrium as a Service
 
-copy the all files at root folder.
+Use below command to install v1.4.18
 
-    chmod u+x Install_Quilibrium_Service.sh
-    chmod u+x config.sh
-    chmod u+x update.sh
+    wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/v1.4.18/install/install_quilibrium_service.sh | bash
 
     ./Install_Quilibrium_Service.sh
     
-After installing your node, kindly wait for 10-15minutes then run config.sh
+If you need to upgrade your node from previous version to 1.4.18, apply below command
 
-    ./config.sh
-
-Do not forget go make 
-
-    source ~/.bashrc 
-
-and check
-
-    go version 
-
-after installation.
+    wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/v1.4.18/update.sh | bash

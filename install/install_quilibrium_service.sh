@@ -2,7 +2,7 @@
 
 cd ~
 # Step 0: Welcome
-echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth"
+echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"

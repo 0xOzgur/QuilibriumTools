@@ -7,9 +7,6 @@ echo "The script is prepared for Ubuntu machines. If you are using another opera
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
-# Set the version number
-VERSION="1.4.18"
-
 # Step 0.1: Check for updates
 echo "⏳ Checking for updates..."
 cd ~/ceremonyclient
@@ -29,9 +26,12 @@ fi
 service ceremonyclient stop
 
 # Step 1:Download Binary
-echo "⏳ Downloading New Release $VERSION"
-git checkout release
+echo "⏳ Downloading new release..."
+git pull  # Fetch and merge the latest changes from the remote repository
+git checkout release  # Checkout the release branch
 
+# Extract the version number from config/version.go
+VERSION=$(grep -A 1 "func GetVersion() \[\]byte {" config/version.go | grep -Eo '0x[0-9a-fA-F]+' | xargs printf "%d.%d.%d")
 
 # Get the system architecture
 ARCH=$(uname -m)

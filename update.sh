@@ -7,17 +7,31 @@ echo "The script is prepared for Ubuntu machines. If you are using another opera
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
+# Set the version number
+VERSION="1.4.18"
+
+# Step 0.1: Check for updates
+echo "⏳ Checking for updates..."
+cd ~/ceremonyclient
+git fetch
+
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse @{u})
+
+if [ "$LOCAL" = "$REMOTE" ]; then
+    echo "Your Quilibrium Node is already up to date. No updates to pull."
+    exit 0
+else
+    echo "New update found. Proceeding with the upgrade..."
+fi
+
 # Stop the ceremonyclient service
 service ceremonyclient stop
 
 # Step 1:Download Binary
-echo "⏳ Downloading New Release v1.4.18"
-cd  ~/ceremonyclient
-git pull
+echo "⏳ Downloading New Release $VERSION"
 git checkout release
 
-# Set the version number
-VERSION="1.4.18"
 
 # Get the system architecture
 ARCH=$(uname -m)

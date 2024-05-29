@@ -14,7 +14,7 @@ echo "Updating the machine"
 echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 
-# Check if sudo is installed
+# Fof DEBIAN OS - Check if sudo and git is installed
 if ! command -v sudo &> /dev/null
 then
     echo "sudo could not be found"
@@ -88,7 +88,7 @@ git checkout release
 VERSION="1.4.18"
 
 # Get the system architecture
-ARCH=$(uname -m)
+# ARCH=$(uname -m)
 
 # Step 5:Determine the ExecStart line based on the architecture
 # Get the current user's home directory
@@ -96,17 +96,7 @@ HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-
-if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="$NODE_PATH/node-$VERSION-linux-amd64"
-elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="$NODE_PATH/node-$VERSION-linux-arm64"
-elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="$NODE_PATH/node-$VERSION-darwin-arm64"
-else
-    echo "Unsupported architecture: $ARCH"
-    exit 1
-fi
+EXEC_START="$NODE_PATH/release_autorun.sh"
 
 # Step 6:Create Ceremonyclient Service
 echo "⏳ Creating Ceremonyclient Service"
@@ -130,7 +120,7 @@ Description=Ceremony Client Go App Service
 Type=simple
 Restart=always
 RestartSec=5s
-WorkingDirectory=/root/ceremonyclient/node
+WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START
 
 [Install]

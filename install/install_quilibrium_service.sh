@@ -2,7 +2,6 @@
 
 cd ~
 # Step 0: Welcome
-
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
@@ -15,9 +14,26 @@ echo "Updating the machine"
 echo "⏳Processing..."
 sleep 2  # Add a 2-second delay
 
-sudo apt update
+# Fof DEBIAN OS - Check if sudo and git is installed
+if ! command -v sudo &> /dev/null
+then
+    echo "sudo could not be found"
+    echo "Installing sudo..."
+    su -c "apt update && apt install sudo -y"
+else
+    echo "sudo is installed"
+fi
+
+if ! command -v git &> /dev/null
+then
+    echo "git could not be found"
+    echo "Installing git..."
+    su -c "apt update && apt install git -y"
+else
+    echo "git is installed"
+fi
+
 sudo apt upgrade -y
-sudo apt install git -y
 
 
 # Step 2: Adjust network buffer sizes
@@ -72,7 +88,7 @@ git checkout release
 VERSION="1.4.18"
 
 # Get the system architecture
-ARCH=$(uname -m)
+# ARCH=$(uname -m)
 
 # Step 5:Determine the ExecStart line based on the architecture
 # Get the current user's home directory
@@ -80,20 +96,10 @@ HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-
-if [ "$ARCH" = "x86_64" ]; then
-    EXEC_START="$NODE_PATH/node-$VERSION-linux-amd64"
-elif [ "$ARCH" = "aarch64" ]; then
-    EXEC_START="$NODE_PATH/node-$VERSION-linux-arm64"
-elif [ "$ARCH" = "arm64" ]; then
-    EXEC_START="$NODE_PATH/node-$VERSION-darwin-arm64"
-else
-    echo "Unsupported architecture: $ARCH"
-    exit 1
-fi
+EXEC_START="$NODE_PATH/release_autorun.sh"
 
 # Step 6:Create Ceremonyclient Service
-echo "⏳ Re-Creating Ceremonyclient Service"
+echo "⏳ Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 
 # Check if the file exists before attempting to remove it
@@ -114,7 +120,7 @@ Description=Ceremony Client Go App Service
 Type=simple
 Restart=always
 RestartSec=5s
-WorkingDirectory=/root/ceremonyclient/node
+WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START
 
 [Install]

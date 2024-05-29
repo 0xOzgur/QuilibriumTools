@@ -3,7 +3,9 @@
 cd ~
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth"
+echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
+echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
+echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
@@ -86,19 +88,29 @@ go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
-git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
-
-# Build Ceremonyclient
-echo "⏳Building Ceremonyclient"
-sleep 1  # Add a 1-second delay
-cd ~/ceremonyclient/node
-GOEXPERIMENT=arenas go install ./...
+if [ -d "ceremonyclient" ]; then
+  echo "Directory ceremonyclient already exists, skipping git clone..."
+else
+  until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git; do
+    echo "Git clone failed, retrying..."
+    sleep 2
+  done
+fi
+cd ~/ceremonyclient/
+git checkout release
 
 # Build Ceremonyclient qClient
 echo "⏳Building qCiient"
 sleep 1  # Add a 1-second delay
 cd ~/ceremonyclient/client
 GOEXPERIMENT=arenas go build -o qclient main.go
+
+# Step 5:Determine the ExecStart line based on the architecture
+# Get the current user's home directory
+HOME=$(eval echo ~$HOME_DIR)
+# Use the home directory in the path
+NODE_PATH="$HOME/ceremonyclient/node"
+EXEC_START="$NODE_PATH/release_autorun.sh
 
 # Create Ceremonyclient Service
 echo "⏳Creating Ceremonyclient Service"
@@ -111,21 +123,22 @@ Description=Ceremony Client Go App Service
 Type=simple
 Restart=always
 RestartSec=5s
-WorkingDirectory=/root/ceremonyclient/node
-Environment=GOEXPERIMENT=arenas
-ExecStart=/root/go/bin/node ./...
+WorkingDirectory=$NODE_PATH
+ExecStart=$EXEC_START
 
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable ceremonyclient
 
-# Start the ceremonyclient service
+sudo systemctl daemon-reload
+sudo systemctl enable ceremonyclient
+
+# Step 7: Start the ceremonyclient service
 echo "✅Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
-service ceremonyclient start
+sudo service ceremonyclient start
 
-# See the logs of the ceremonyclient service
+# Step 8: See the logs of the ceremonyclient service
 echo "🎉Welcome to Quilibrium Ceremonyclient"
 echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay

@@ -20,8 +20,6 @@ NODE_PATH="$HOME/ceremonyclient/node"
 EXEC_START="$NODE_PATH/release_autorun.sh"
 
 # Step 3:Re-Create Ceremonyclient Service
-echo "⏳ Re-Creating Ceremonyclient Service"
-sleep 2  # Add a 2-second delay
 rm /lib/systemd/system/ceremonyclient.service
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]

@@ -13,6 +13,7 @@ service ceremonyclient stop
 # Step 1:Download Binary
 echo "⏳ Downloading New Release v1.4.18"
 cd  ~/ceremonyclient
+git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
 git pull
 git checkout release
 

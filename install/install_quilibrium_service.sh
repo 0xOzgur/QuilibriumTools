@@ -76,7 +76,7 @@ cd ~
 if [ -d "ceremonyclient" ]; then
   echo "Directory ceremonyclient already exists, skipping git clone..."
 else
-  until git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git; do
+  until git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git || git clone https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git; do
     echo "Git clone failed, retrying..."
     sleep 2
   done

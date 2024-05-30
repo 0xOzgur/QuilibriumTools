@@ -9,6 +9,7 @@ service ceremonyclient stop
 
 # Step 1:Download Binary
 cd  ~/ceremonyclient
+git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git
 git pull
 git checkout release
 

@@ -18,7 +18,7 @@ HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/node-1.4.18-linux-amd64"
+EXEC_START="$NODE_PATH/node-1.4.18-linux-arm64"
 
 # Step 3:Re-Create Ceremonyclient Service
 rm /lib/systemd/system/ceremonyclient.service

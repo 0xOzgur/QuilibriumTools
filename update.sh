@@ -10,6 +10,8 @@ sleep 10  # Add a 10-second delay
 # Stop the ceremonyclient service
 service ceremonyclient stop
 
+apt install cpulimit -y
+
 # Step 1:Download Binary
 echo "⏳ Downloading New Release v1.4.18"
 cd  ~/ceremonyclient

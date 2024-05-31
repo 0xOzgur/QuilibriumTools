@@ -123,6 +123,7 @@ Description=Ceremony Client Go App Service
 Type=simple
 Restart=always
 RestartSec=5s
+
 WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START
 

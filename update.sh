@@ -5,7 +5,7 @@ echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.18!"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."
-sleep 10  # Add a 10-second delay
+sleep 5  # Add a 5-second delay
 
 # Stop the ceremonyclient service
 service ceremonyclient stop

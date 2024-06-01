@@ -10,6 +10,25 @@ echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
+# Check if ceremonyclient service exists and stop it if it does
+if sudo systemctl status ceremonyclient &> /dev/null; then
+    echo "Ceremonyclient service found. Stopping..."
+    sudo service ceremonyclient stop
+    sleep 2  # Add a 2-second delay
+fi
+
+# Step 0: Increase Swap Space
+if [ ! -d /swap ]; then
+    echo "Increasing swap space..."
+    sudo mkdir /swap
+    sudo fallocate -l 16G /swap/swapfile
+    sudo chmod 600 /swap/swapfile
+    sudo mkswap /swap/swapfile
+    sudo swapon /swap/swapfile
+    echo '/swap/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+else
+    echo "Swap space already exists, skipping swap increase..."
+fi
 
 # Step 1: Update and Upgrade the Machine
 echo "Updating the machine"
@@ -115,6 +134,20 @@ EXEC_START="$NODE_PATH/release_autorun.sh"
 # Create Ceremonyclient Service
 echo "⏳Creating Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
+
+# Check if the file exists before attempting to remove it
+if [ -f "/lib/systemd/system/ceremonyclient.service" ]; then
+    # If the file exists, remove it
+    rm /lib/systemd/system/ceremonyclient.service
+    echo "ceremonyclient.service file removed."
+else
+    # If the file does not exist, inform the user
+    echo "ceremonyclient.service file does not exist. No action taken."
+fi
+
+CPU_THREADS=$(nproc)
+CPU_QUOTA=$(( CPU_THREADS * 90 ))
+
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -123,6 +156,8 @@ Description=Ceremony Client Go App Service
 Type=simple
 Restart=always
 RestartSec=5s
+CPUAccounting=true
+CPUQuota=${CPU_QUOTA}%
 
 WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START

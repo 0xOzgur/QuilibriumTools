@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Bootstrap peer list
-specific_peers=(
+bootstrap_peers=(
 "EiDpYbDwT2rZq70JNJposqAC+vVZ1t97pcHbK8kr5G4ZNA=="
 "EiCcVN/KauCidn0nNDbOAGMHRZ5psz/lthpbBeiTAUEfZQ=="
 "EiDhVHjQKgHfPDXJKWykeUflcXtOv6O2lvjbmUnRrbT2mw=="
@@ -11,7 +11,7 @@ specific_peers=(
 "EiDEYNo7GEfMhPBbUo+zFSGeDECB0RhG0GfAasdWp2TTTQ=="
 "EiCzMVQnCirB85ITj1x9JOEe4zjNnnFIlxuXj9m6kGq1SQ=="
 "EiD1ClZn/lr+n/gnS96Q4gKwBDk3yl33kNIhx9wUxJiyEA=="
-"EiD7C6nsh1456MTlTihUrDqO4tLn/wcbF1HXM5V7P5GXEQ=="
+"EiD7C6nsh1456MTlTihUrDqO4tLn/wcb1HXM5V7P5GXEQ=="
 "EiDUezzC3QCy6pNVg6+L9l0rH6CVIQSqxEKAGMSQJqnO1g=="
 "EiDLg4I2+SAV7f0dUfT/qwDJWAstv1CAYmbhvJG3LxrgZw=="
 "EiALqqXPhdT+LWlx2cbx3vYiFGxeUhv+KgyhE+MT8g7fLg=="
@@ -24,11 +24,12 @@ specific_peers=(
 # Run the grpcurl command and capture its output
 output=$(grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNetworkInfo)
 
-# Check if any of the specific peers are in the output
-for peer in "${specific_peers[@]}"; do
-    if [[ $output == *"$peer"* ]]; then
-        echo "You see $peer as a bootstrap peer"
+# Check if any of the bootstrap peers are in the output
+for peer in "${bootstrap_peers[@]}"; do
+    decoded_peer=$(echo "$peer" | base64 --decode)
+    if [[ $output == *"$decoded_peer"* ]]; then
+        echo "You see $decoded_peer as a bootstrap peer"
     else
-        echo "Peer $peer not found"
+        echo "Peer $decoded_peer not found"
     fi
 done

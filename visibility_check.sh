@@ -16,21 +16,13 @@ bootstrap_peers=(
 output=$(grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNetworkInfo)
 
 # Check if any of the specific peers are in the output
-# for peer in "${bootstrap_peers[@]}"; do
-#     if [[ $output == *"$peer"* ]]; then
-#         echo "You see $peer as a bootstrap peer"
-#     else
-#         echo "Peer $peer not found"
-#     fi
-# done
-
-
-# Check if any of the bootstrap peers are in the output
 visible=false
 for peer in "${bootstrap_peers[@]}"; do
     if [[ $output == *"$peer"* ]]; then
         visible=true
-        break
+        echo "You see $peer as a bootstrap peer"
+    else
+        echo "Peer $peer not found"
     fi
 done
 

@@ -1,4 +1,26 @@
 #!/bin/bash
+    echo "Welcome! Please choose an option:"
+# Menu
+while true; do
+    echo "1) Install Prerequisites"
+    echo "2) Install Node"
+    echo "3) Configure grpcurl"
+    echo "4) Check Visibility"
+    echo "5) Node Info"
+    echo "6) Exit"
+
+    read -p "Enter your choice: " choice
+
+    case $choice in
+        1) install_prerequisites ;;
+        2) install_node ;;
+        3) configure_grpcurl ;;
+        4) check_visibility ;;
+        5) node_info ;;
+        6) break ;;
+        *) echo "Invalid option, please try again." ;;
+    esac
+done
 
 # Function for each menu option
 install_prerequisites() {
@@ -61,25 +83,3 @@ node_info() {
     # Your code here
 }
 
-# Menu
-while true; do
-    echo "Welcome! Please choose an option:"
-    echo "1) Install Prerequisites"
-    echo "2) Install Node"
-    echo "3) Configure grpcurl"
-    echo "4) Check Visibility"
-    echo "5) Node Info"
-    echo "6) Exit"
-
-    read -p "Enter your choice: " choice
-
-    case $choice in
-        1) install_prerequisites ;;
-        2) install_node ;;
-        3) configure_grpcurl ;;
-        4) check_visibility ;;
-        5) node_info ;;
-        6) break ;;
-        *) echo "Invalid option, please try again." ;;
-    esac
-done

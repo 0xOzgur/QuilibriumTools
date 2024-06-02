@@ -1,4 +1,4 @@
-#!/bin/bash  -i
+#!/bin/bash
 
 # Function for each menu option
 install_prerequisites() {

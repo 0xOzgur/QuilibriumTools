@@ -1,4 +1,12 @@
-#!/bin/bash
+#!/bin/bash -i
+
+# Source .bashrc to make GO work if it is not working
+source ~/.bashrc
+
+clear
+
+# Set the version number
+VERSION="1.4.18"
 
 # Get system information
 ARCH=$(uname -m)
@@ -8,14 +16,18 @@ OS=$(uname -s)
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY='node-1.4.18-linux-amd64'
+        GO_BINARY='go1.20.14.linux-amd64.tar.gz'
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY='node-1.4.18-darwin-amd64'
+        GO_BINARY='go1.20.14.linux-amd64.tar.gz'
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY='node-1.4.18-linux-arm64'
+        GO_BINARY='go1.20.14.linux-arm64.tar.gz'
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-1.4.18-darwin-arm64'
+        NODE_BINARY='node-1.4.18-darwin-arm64.tar.gz'
+        GO_BINARY='go1.20.14.linux-arm64.tar.gz'
     fi
 fi
 
@@ -23,11 +35,36 @@ fi
 install_prerequisites() {
 echo "Installing prerequisites..."
 
-apt install cpulimit -y
-apt install gawk -y #incase it is not instal
+echo "Updating the machine"
+echo "⏳Processing..."
+sleep 2  # Add a 2-second delay
 
-wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
-sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
+# Fof DEBIAN OS - Check if sudo and git is installed
+if ! command -v sudo &> /dev/null
+then
+    echo "sudo could not be found"
+    echo "Installing sudo..."
+    su -c "apt update && apt install sudo -y"
+else
+    echo "sudo is installed"
+fi
+
+if ! command -v git &> /dev/null
+then
+    echo "git could not be found"
+    echo "Installing git..."
+    su -c "apt update && apt install git -y"
+else
+    echo "git is installed"
+fi
+sudo apt update
+sudo apt upgrade -y
+
+apt install cpulimit -y
+apt install gawk -y #incase it is not installed
+
+wget https://go.dev/dl/$GO_BINARY || { echo "Failed to download Node! Exiting..."; exit_message; exit 1; }    
+sudo tar -xvf $GO_BINARY || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
 sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
 sudo rm go1.20.14.linux-amd64.tar.gz || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
 
@@ -75,35 +112,9 @@ sleep 1  # Add a 1-second delay
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 }
 
+
 install_node() {
     echo "Installing node..."
-    # Step 1: Update and Upgrade the Machine
-echo "Updating the machine"
-echo "⏳Processing..."
-sleep 2  # Add a 2-second delay
-
-# Fof DEBIAN OS - Check if sudo and git is installed
-if ! command -v sudo &> /dev/null
-then
-    echo "sudo could not be found"
-    echo "Installing sudo..."
-    su -c "apt update && apt install sudo -y"
-else
-    echo "sudo is installed"
-fi
-
-if ! command -v git &> /dev/null
-then
-    echo "git could not be found"
-    echo "Installing git..."
-    su -c "apt update && apt install git -y"
-else
-    echo "git is installed"
-fi
-
-sudo apt upgrade -y
-
-
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."
 if grep -q "^net.core.rmem_max=600000000$" /etc/sysctl.conf; then
@@ -153,8 +164,6 @@ cd ~/ceremonyclient/
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git 
 git checkout release
 
-# Set the version number
-# VERSION="1.4.18"
 
 # Get the system architecture
 # ARCH=$(uname -m)
@@ -210,11 +219,67 @@ echo "🎉Welcome to Quilibrium Ceremonyclient"
 
 configure_grpcurl() {
     echo "Configuring grpcurl..."
-    # Your code here
+    line_exists() {
+    grep -qF "$1" "$2"
+}
+
+# Step 1: Enable gRPC
+echo "Enabling gRPC..."
+cd "$HOME/ceremonyclient/node" || { echo "Failed to change directory to ~/ceremonyclient/node! Exiting..."; exit 1; }
+
+# Check if the line listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337 exists
+if ! line_exists "listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337" .config/config.yml; then
+    # Check if the line listenGrpcMultiaddr: "" exists
+    if line_exists "listenGrpcMultiaddr: \"\"" .config/config.yml; then
+        # Substitute listenGrpcMultiaddr: "" with listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337
+        sudo sed -i 's#^listenGrpcMultiaddr:.*$#listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337#' .config/config.yml || { echo "Failed to enable gRPC! Exiting..."; exit 1; }
+    else
+        # Add listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337
+        echo "listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337" | sudo tee -a .config/config.yml > /dev/null || { echo "Failed to enable gRPC! Exiting..."; exit 1; }
+    fi
+else
+    echo "gRPC already enabled."
+fi
+
+
+# Check if the line listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338 exists
+if ! line_exists "listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338" .config/config.yml; then
+    # Check if the line listenRESTMultiaddr: "" exists
+    if line_exists "listenRESTMultiaddr: \"\"" .config/config.yml; then
+        # Substitute listenRESTMultiaddr: "" with listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338
+        sudo sed -i 's#^listenRESTMultiaddr:.*$#listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338#' .config/config.yml || { echo "Failed to enable gRPC! Exiting..."; exit 1; }
+    else
+        # Add listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338
+        echo "listenRESTMultiaddr: /ip4/127.0.0.1/tcp/8338" | sudo tee -a .config/config.yml > /dev/null || { echo "Failed to enable gRPC! Exiting..."; exit 1; }
+    fi
+else
+    echo "gRPC already enabled."
+fi
+
+
+
+# Step 2: Enable Stats Collection
+echo "Enabling Stats Collection..."
+if ! line_exists "  statsMultiaddr: \"/dns/stats.quilibrium.com/tcp/443\"" .config/config.yml; then
+    sudo sed -i '/^ *engine:/a\  statsMultiaddr: "/dns/stats.quilibrium.com/tcp/443"' .config/config.yml || { echo "Failed to enable Stats Collection! Exiting..."; exit 1; }
+else
+    echo "Stats Collection already enabled."
+fi
+
+# Check if both lines were added successfully
+if line_exists "listenGrpcMultiaddr: /ip4/127.0.0.1/tcp/8337" .config/config.yml && line_exists "  statsMultiaddr: \"/dns/stats.quilibrium.com/tcp/443\"" .config/config.yml; then
+    echo "Success: The script successfully edited your config.yml file."
+else
+    echo "ERROR: The script failed to correctly edit your config.yml file."
+    echo "You may want to follow the online guide to do it manually."
+    exit 1
+fi
+
+echo "gRPC calls setup was successful."
 }
 
 update_node() {
-    echo "Configuring grpcurl..."
+    echo "Updating node..."
     service ceremonyclient stop
 
 apt install cpulimit -y
@@ -279,15 +344,12 @@ sudo systemctl enable ceremonyclient
 sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.18"
+echo "🎉 Welcome to Quilibrium Ceremonyclient $VERSION"
 }
 
 check_visibility() {
-    echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
-    echo "⏳You need GO and grpcurl installed and configured on your machine to run this script. If you don't have them, please install and configure grpcurl first."
-    echo "You can find the installation instructions at https://docs.quilibrium.space/installing-prerequisites"
     echo "⏳Processing..."
-    sleep 5  # Add a 5-second delay
+    sleep 2  # Add a 2-second delay
 
     # Bootstrap peer list
     bootstrap_peers=(
@@ -324,18 +386,61 @@ check_visibility() {
 
 node_info() {
     echo "Getting node info..."
-    cd ~/ceremonyclient/node && ./${NODE_BINARY} -node-info
+    cd ~/ceremonyclient/node && ./$NODE_BINARY -node-info
 }
 
 
 node_logs() {
     echo "Getting node logs..."
-    sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat
+    # sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat
+    # sudo journalctl -u ceremonyclient.service -n 100 --no-hostname -o cat
 }
 
+restart_node() {
+    echo "Restarting node..."
+    service ceremonyclient restart
+}
+
+stop_node() {
+    echo "Stopping node..."
+    service ceremonyclient stop
+    echo "Node stopped"
+}
+
+
 # Menu
-    echo "Welcome! Please choose an option:"
 while true; do
+    clear
+    echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
+    echo "Welcome to Quilibrium for Dummies!"
+
+echo "
+    _____        _ _ _ _           _             
+   / ___ \      (_) (_) |         (_)            
+  | |   | |_   _ _| |_| | _   ____ _ _   _ ____  
+  | |   |_| | | | | | | || \ / ___) | | | |    \ 
+   \ \____| |_| | | | | |_) ) |   | | |_| | | | |
+    \_____)\____|_|_|_|____/|_|   |_|\____|_|_|_|
+                                                 
+              ___                                    
+             / __)                                   
+            | |__ ___   ____                         
+            |  __) _ \ / ___)                        
+            | | | |_| | |                            
+            _|  \___/|_|                            
+                                                 
+   _____                     _                   
+  (____ \                   (_)                  
+   _   \ \ _   _ ____  ____  _  ____  ___        
+  | |   | | | | |    \|    \| |/ _  )/___)       
+  | |__/ /| |_| | | | | | | | ( (/ /|___ |       
+  |_____/  \____|_|_|_|_|_|_|_|\____|___/        
+                                                 "
+
+
+
+    echo "Please choose an option:"
+    
     echo "1) Install Prerequisites"
     echo "2) Install Node"
     echo "3) Configure grpCurl"
@@ -343,7 +448,9 @@ while true; do
     echo "5) Check Visibility"
     echo "6) Node Info"
     echo "7) Node Logs"
-    echo "8) Exit"
+    echo "8) Restart Node"
+    echo "9) Stop Node"
+    echo "e) Exit"
 
     read -p "Enter your choice: " choice
 
@@ -352,10 +459,14 @@ while true; do
         2) install_node ;;
         3) configure_grpcurl ;;
         4) update_node ;;
-        4) check_visibility ;;
-        5) node_info ;;
-        6) node_logs ;;
-        7) break ;;
+        5) check_visibility ;;
+        6) node_info ;;
+        7) node_logs ;;
+        8) restart_node ;;
+        9) stop_node ;;
+        e) break ;;
         *) echo "Invalid option, please try again." ;;
     esac
+
+    read -n 1 -s -r -p "Press any key to continue"
 done

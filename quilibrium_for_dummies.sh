@@ -179,7 +179,7 @@ HOME=$(eval echo ~$HOME_DIR)
 NODE_PATH="$HOME/ceremonyclient/node"
 EXEC_START="$NODE_PATH/release_autorun.sh"
 
-# Step 6:Create Ceremonyclient Service
+# Create Ceremonyclient Service
 echo "⏳ Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 
@@ -226,7 +226,7 @@ configure_grpcurl() {
     grep -qF "$1" "$2"
 }
 
-# Step 1: Enable gRPC
+# Enable gRPC
 echo "Enabling gRPC..."
 cd "$HOME/ceremonyclient/node" || { echo "Failed to change directory to ~/ceremonyclient/node! Exiting..."; exit 1; }
 
@@ -288,7 +288,7 @@ update_node() {
 apt install cpulimit -y
 apt install gawk -y #incase it is not installed
 
-# Step 1:Download Binary
+# Download Binary
 echo "⏳ Downloading New Release v$VERSION"
 cd  ~/ceremonyclient
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
@@ -339,7 +339,7 @@ else
     fi
 fi
 
-# Step 4:Start the ceremonyclient service
+# Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 sudo systemctl daemon-reload

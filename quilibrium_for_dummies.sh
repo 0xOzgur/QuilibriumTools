@@ -8,38 +8,40 @@ clear
 # Set the version number
 VERSION="1.4.18"
 
-# Get system information
+# Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
 OS=$(uname -s)
 
 # Determine the node binary name based on the architecture and OS
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-1.4.18-linux-amd64'
-        GO_BINARY='go1.20.14.linux-amd64.tar.gz'
+        NODE_BINARY="node-$VERSION-linux-amd64"
+        GO_BINARY="go1.20.14.linux-amd64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-1.4.18-darwin-amd64'
-        GO_BINARY='go1.20.14.linux-amd64.tar.gz'
+        NODE_BINARY="node-$VERSION-darwin-amd64"
+        GO_BINARY="go1.20.14.linux-amd64.tar.gz"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-1.4.18-linux-arm64'
-        GO_BINARY='go1.20.14.linux-arm64.tar.gz'
+        NODE_BINARY="node-$VERSION-linux-arm64"
+        GO_BINARY="go1.20.14.linux-arm64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-1.4.18-darwin-arm64.tar.gz'
-        GO_BINARY='go1.20.14.linux-arm64.tar.gz'
+        NODE_BINARY="node-$VERSION-darwin-arm64.tar.gz"
+        GO_BINARY="go1.20.14.linux-arm64.tar.gz"
     fi
 fi
 
 # Function for each menu option
 install_prerequisites() {
 echo "Installing prerequisites..."
+sleep 1  # Add a 1-second delay
 
 echo "Updating the machine"
 echo "⏳Processing..."
-sleep 2  # Add a 2-second delay
+sleep 1  # Add a 1-second delay
 
 # Fof DEBIAN OS - Check if sudo and git is installed
+# Step 1.1: Prepare Machine
 if ! command -v sudo &> /dev/null
 then
     echo "sudo could not be found"
@@ -48,7 +50,7 @@ then
 else
     echo "sudo is installed"
 fi
-
+# ınstall git if not installed
 if ! command -v git &> /dev/null
 then
     echo "git could not be found"
@@ -57,21 +59,25 @@ then
 else
     echo "git is installed"
 fi
+
+# Update the machine
 sudo apt update
 sudo apt upgrade -y
 
+# Install cpu limit and gawk
 apt install cpulimit -y
 apt install gawk -y #incase it is not installed
 
+# Download and install Go
 wget https://go.dev/dl/$GO_BINARY || { echo "Failed to download Node! Exiting..."; exit_message; exit 1; }    
 sudo tar -xvf $GO_BINARY || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
 sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
 sudo rm go1.20.14.linux-amd64.tar.gz || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
 
 
-# Step 4: Set Go environment variables
+# Set Go environment variables
 echo "⏳Setting Go environment variables..."
-sleep 5  # Add a 5-second delay
+sleep 2  # Add a 2-second delay
 
 # Check if GOROOT is already set
 if grep -q 'GOROOT=/usr/local/go' ~/.bashrc; then
@@ -100,11 +106,11 @@ fi
 # Source .bashrc to apply changes
 echo "⏳Sourcing .bashrc to apply changes"
 source ~/.bashrc
-sleep 5  # Add a 5-second delay
+sleep 2  # Add a 2-second delay
 
 # Check GO Version
 go version
-sleep 5  # Add a 5-second delay
+sleep 2  # Add a 2-second delay
 
 # Install gRPCurl
 echo "⏳Installing gRPCurl"
@@ -112,10 +118,10 @@ sleep 1  # Add a 1-second delay
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 }
 
-
+# Install Node
 install_node() {
     echo "Installing node..."
-# Step 2: Adjust network buffer sizes
+# Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."
 if grep -q "^net.core.rmem_max=600000000$" /etc/sysctl.conf; then
   echo "net.core.rmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
@@ -129,7 +135,7 @@ else
 fi
 sudo sysctl -p
 
-# Step 3: Check if directory ~/ceremonyclient exists, download from github 
+# Check if directory ~/ceremonyclient exists, download from github 
 if [ -d ~/ceremonyclient ]; then
     # Check if backup directory ~/backup/qnode_keys exists, if not create it
     if [ ! -d ~/backup/qnode_keys ]; then
@@ -148,7 +154,7 @@ if [ -d ~/ceremonyclient ]; then
     fi
 fi
 
-# Step 4:Download Ceremonyclient
+# Download Ceremonyclient
 echo "⏳Downloading Ceremonyclient"
 sleep 1  # Add a 1-second delay
 cd ~
@@ -165,10 +171,7 @@ git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclien
 git checkout release
 
 
-# Get the system architecture
-# ARCH=$(uname -m)
 
-# Step 5:Determine the ExecStart line based on the architecture
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
 
@@ -208,12 +211,12 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
 
-# Step 7: Start the ceremonyclient service
+# Start the ceremonyclient service
 echo "✅Starting Ceremonyclient Service"
 sleep 1  # Add a 1-second delay
 sudo service ceremonyclient start
 
-# Step 8: See the logs of the ceremonyclient service
+# See the logs of the ceremonyclient service
 echo "🎉Welcome to Quilibrium Ceremonyclient"
 }
 
@@ -258,7 +261,7 @@ fi
 
 
 
-# Step 2: Enable Stats Collection
+# Enable Stats Collection
 echo "Enabling Stats Collection..."
 if ! line_exists "  statsMultiaddr: \"/dns/stats.quilibrium.com/tcp/443\"" .config/config.yml; then
     sudo sed -i '/^ *engine:/a\  statsMultiaddr: "/dns/stats.quilibrium.com/tcp/443"' .config/config.yml || { echo "Failed to enable Stats Collection! Exiting..."; exit 1; }
@@ -286,7 +289,7 @@ apt install cpulimit -y
 apt install gawk -y #incase it is not installed
 
 # Step 1:Download Binary
-echo "⏳ Downloading New Release v1.4.18"
+echo "⏳ Downloading New Release v$VERSION"
 cd  ~/ceremonyclient
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
 git pull
@@ -299,7 +302,7 @@ HOME=$(eval echo ~$HOME_DIR)
 NODE_PATH="$HOME/ceremonyclient/node"
 EXEC_START="$NODE_PATH/release_autorun.sh"
 
-# Step 3:Re-Create Ceremonyclient Service
+# Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 SERVICE_FILE="/lib/systemd/system/ceremonyclient.service"
@@ -344,7 +347,7 @@ sudo systemctl enable ceremonyclient
 sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "🎉 Welcome to Quilibrium Ceremonyclient $VERSION"
+echo "🎉 Welcome to Quilibrium Ceremonyclient v$VERSION"
 }
 
 check_visibility() {

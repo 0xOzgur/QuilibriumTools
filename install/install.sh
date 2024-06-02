@@ -1,39 +1,5 @@
 #!/bin/bash  -i
 
-cd ~
-
-# Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
-echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
-echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
-echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
-echo "⏳Processing..."
-sleep 10  # Add a 10-second delay
-
-
-# Step 1: Update and Upgrade the Machine
-echo "Updating the machine"
-echo "⏳Processing..."
-sleep 2  # Add a 2-second delay
-apt update
-apt upgrade -y
-apt install sudo -y
-apt install git -y
-
-# Step 2: Adjust network buffer sizes
-echo "Adjusting network buffer sizes..."
-if grep -q "^net.core.rmem_max=600000000$" /etc/sysctl.conf; then
-  echo "net.core.rmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
-else
-  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.rmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
-fi
-if grep -q "^net.core.wmem_max=600000000$" /etc/sysctl.conf; then
-  echo "net.core.wmem_max=600000000 found inside /etc/sysctl.conf, skipping..."
-else
-  echo -e "\n# Change made to increase buffer sizes for better network performance for ceremonyclient\nnet.core.wmem_max=600000000" | sudo tee -a /etc/sysctl.conf > /dev/null
-fi
-sudo sysctl -p
-
 
 # Installing Go 1.20.14
 wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
@@ -91,7 +57,7 @@ cd ~
 if [ -d "ceremonyclient" ]; then
   echo "Directory ceremonyclient already exists, skipping git clone..."
 else
-  until git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git; do
+  until git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git || git clone https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git; do
     echo "Git clone failed, retrying..."
     sleep 2
   done

@@ -1,12 +1,31 @@
 # Quilibrium Tools
-Autoinstaller Script for Quilibrium as a Service
+
+**Quilibrium for Dummies** 
+
+This script is an all-in-one quil usage software for newcomers.
+
+For installation and first run, please run
+
+    wget https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/quilibrium_for_dummies.sh
+    chmod u+x quilibrium_for_dummies.sh
+    ./quilibrium_for_dummies.sh
+
+After first run, when you need to reach your node, you need to run only;
+
+    ./quilibrium_for_dummies.sh
+
+    
+
+
+**Autoinstaller Script for Quilibrium as a Service**
 
 Use below command to install v1.4.18
 
     wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/install/install_quilibrium_service.sh | bash
 
     
-If you need to upgrade your node from previous version to 1.4.18, apply below command
+**Autoupdater**
+If you need to update your node from previous version to 1.4.18, apply below command
 
     wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/update.sh | bash
 

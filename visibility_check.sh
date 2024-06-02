@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth"
+echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
 echo "⏳You need GO and grpcurl installed on your machine to run this script. If you don't have them, please install them first."
 echo "You can find the installation instructions at https://docs.quilibrium.space/installing-prerequisites"
 echo "⏳Processing..."

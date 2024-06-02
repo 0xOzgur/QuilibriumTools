@@ -22,6 +22,10 @@ fi
 # Function for each menu option
 install_prerequisites() {
 echo "Installing prerequisites..."
+
+apt install cpulimit -y
+apt install gawk -y #incase it is not instal
+
 wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
 sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
 sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
@@ -209,6 +213,75 @@ configure_grpcurl() {
     # Your code here
 }
 
+update_node() {
+    echo "Configuring grpcurl..."
+    service ceremonyclient stop
+
+apt install cpulimit -y
+apt install gawk -y #incase it is not installed
+
+# Step 1:Download Binary
+echo "⏳ Downloading New Release v1.4.18"
+cd  ~/ceremonyclient
+git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
+git pull
+git checkout release
+
+# Get the current user's home directory
+HOME=$(eval echo ~$HOME_DIR)
+
+# Use the home directory in the path
+NODE_PATH="$HOME/ceremonyclient/node"
+EXEC_START="$NODE_PATH/release_autorun.sh"
+
+# Step 3:Re-Create Ceremonyclient Service
+echo "⏳ Re-Creating Ceremonyclient Service"
+sleep 2  # Add a 2-second delay
+SERVICE_FILE="/lib/systemd/system/ceremonyclient.service"
+if [ ! -f "$SERVICE_FILE" ]; then
+    echo "📝 Creating new ceremonyclient service file..."
+    if ! sudo tee "$SERVICE_FILE" > /dev/null <<EOF
+[Unit]
+Description=Ceremony Client Go App Service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+WorkingDirectory=$NODE_PATH
+ExecStart=$EXEC_START
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    then
+        echo "❌ Error: Failed to create ceremonyclient service file." >&2
+        exit 1
+    fi
+else
+    echo "🔍 Checking existing ceremonyclient service file..."
+    # Check if the required lines exist and if they are different
+    if ! grep -q "WorkingDirectory=$NODE_PATH" "$SERVICE_FILE" || ! grep -q "ExecStart=$EXEC_START" "$SERVICE_FILE"; then
+        echo "🔄 Updating existing ceremonyclient service file..."
+        # Replace the existing lines with new values
+        sudo sed -i "s|WorkingDirectory=.*|WorkingDirectory=$NODE_PATH|" "$SERVICE_FILE"
+        sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" "$SERVICE_FILE"
+    else
+        echo "✅ No changes needed."
+    fi
+fi
+
+# Step 4:Start the ceremonyclient service
+echo "✅ Starting Ceremonyclient Service"
+sleep 2  # Add a 2-second delay
+sudo systemctl daemon-reload
+sudo systemctl enable ceremonyclient
+sudo service ceremonyclient start
+
+# See the logs of the ceremonyclient service
+echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.18"
+}
+
 check_visibility() {
     echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
     echo "⏳You need GO and grpcurl installed and configured on your machine to run this script. If you don't have them, please install and configure grpcurl first."
@@ -257,7 +330,7 @@ node_info() {
 
 node_logs() {
     echo "Getting node logs..."
-    udo journalctl -u ceremonyclient.service -f --no-hostname -o cat
+    sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat
 }
 
 # Menu
@@ -266,10 +339,11 @@ while true; do
     echo "1) Install Prerequisites"
     echo "2) Install Node"
     echo "3) Configure grpCurl"
-    echo "4) Check Visibility"
-    echo "5) Node Info"
-    echo "6) Node Logs"
-    echo "7) Exit"
+    echo "4) Update Node"
+    echo "5) Check Visibility"
+    echo "6) Node Info"
+    echo "7) Node Logs"
+    echo "8) Exit"
 
     read -p "Enter your choice: " choice
 
@@ -277,6 +351,7 @@ while true; do
         1) install_prerequisites ;;
         2) install_node ;;
         3) configure_grpcurl ;;
+        4) update_node ;;
         4) check_visibility ;;
         5) node_info ;;
         6) node_logs ;;

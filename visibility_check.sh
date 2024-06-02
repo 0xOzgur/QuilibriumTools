@@ -15,12 +15,11 @@ bootstrap_peers=(
 # Run the grpcurl command and capture its output
 output=$(grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNetworkInfo)
 
-# Check if any of the bootstrap peers are in the output
+# Check if any of the specific peers are in the output
 for peer in "${bootstrap_peers[@]}"; do
-    decoded_peer=$(echo "$peer" | base64 --decode)
-    if [[ $output == *"$decoded_peer"* ]]; then
-        echo "You see $decoded_peer as a bootstrap peer"
+    if [[ $output == *"$peer"* ]]; then
+        echo "You see $peer as a bootstrap peer"
     else
-        echo "Peer $decoded_peer not found"
+        echo "Peer $peer not found"
     fi
 done

@@ -54,8 +54,8 @@ install_prerequisites() {
     }
 
 install_node() {
-        echo "Installing node..."
-        # Step 1: Update and Upgrade the Machine
+    echo "Installing node..."
+    # Step 1: Update and Upgrade the Machine
     echo "Updating the machine"
     echo "⏳Processing..."
     sleep 2  # Add a 2-second delay
@@ -159,20 +159,20 @@ install_node() {
         echo "ceremonyclient.service file does not exist. No action taken."
     fi
 
-    sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
-    [Unit]
-    Description=Ceremony Client Go App Service
+sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
+[Unit]
+Description=Ceremony Client Go App Service
 
-    [Service]
-    Type=simple
-    Restart=always
-    RestartSec=5s
-    WorkingDirectory=$NODE_PATH
-    ExecStart=$EXEC_START
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+WorkingDirectory=$NODE_PATH
+ExecStart=$EXEC_START
 
-    [Install]
-    WantedBy=multi-user.target
-    EOF
+[Install]
+WantedBy=multi-user.target
+EOF
 
     sudo systemctl daemon-reload
     sudo systemctl enable ceremonyclient

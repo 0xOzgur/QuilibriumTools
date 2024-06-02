@@ -392,7 +392,7 @@ node_info() {
 
 node_logs() {
     echo "Getting node logs..."
-    # sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat
+    sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat
     # sudo journalctl -u ceremonyclient.service -n 100 --no-hostname -o cat
 }
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth"
+echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.18!"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."

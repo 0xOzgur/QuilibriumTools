@@ -1,1 +1,6 @@
 ssh.bat
+visibility/permanifest.json
+visibility/output.txt
+visibility/output.csv
+visibility/visibility.py
+visibility/peerlis.txt

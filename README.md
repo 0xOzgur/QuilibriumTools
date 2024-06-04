@@ -16,7 +16,6 @@ After first run, when you need to reach your node, you need to run only;
 
     
 
-
 **Autoinstaller Script for Quilibrium as a Service**
 
 Use below command to install v1.4.18
@@ -25,8 +24,15 @@ Use below command to install v1.4.18
 
     
 **Autoupdater**
+
 If you need to update your node from previous version to 1.4.18, apply below command
 
     wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/update.sh | bash
 
 For easy management of your nodes I created some shortcodes. You can import .profile or .bash_profile (Some Debian installations) file and source. Then you can easily query node related infos.
+
+**Check Your Node Visibility**
+
+You can check if your node sees Q Inc Bootstraps. If you don't see you most probably will not get any rewards.
+
+    wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/visibility_check.sh | bash

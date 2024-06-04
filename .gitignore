@@ -1,4 +1,4 @@
 ssh.bat
 visibility/
 visibility/visibility.py
-visibility/peerlist.txt
+visibility/peerlist.xml

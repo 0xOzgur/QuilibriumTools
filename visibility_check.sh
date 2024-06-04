@@ -36,5 +36,5 @@ done
 if $visible ; then
     echo "Great, your node is visible!"
 else
-    echo "Sorry, your node is not visible. Please restart your node and try again."
+    echo "Sorry, your node is not visible. Please restart your node and wait 15 minutes then try again."
 fi

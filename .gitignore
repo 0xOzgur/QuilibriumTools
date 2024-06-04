@@ -1,9 +1,4 @@
 ssh.bat
-visibility/peermanitest.json
-visibility/output.xlsx
-visibility/output.csv
+visibility/
 visibility/visibility.py
 visibility/peerlist.txt
-visibility
-/visibility
-visibility/

@@ -1,6 +1,6 @@
 ssh.bat
-visibility/permanifest.json
-visibility/output.txt
+visibility/peermanitest.json
+visibility/output.xlsx
 visibility/output.csv
 visibility/visibility.py
 visibility/peerlis.txt

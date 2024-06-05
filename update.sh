@@ -2,7 +2,7 @@
 
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
-echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.18!"
+echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.19!"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."
 sleep 5  # Add a 5-second delay
@@ -14,7 +14,7 @@ apt install cpulimit -y
 apt install gawk -y #incase it is not installed
 
 # Step 1:Download Binary
-echo "⏳ Downloading New Release v1.4.18"
+echo "⏳ Downloading New Release v1.4.19"
 cd  ~/ceremonyclient
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
 git pull
@@ -72,7 +72,7 @@ sudo systemctl enable ceremonyclient
 sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.18"
+echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.19"
 echo "⏳ Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

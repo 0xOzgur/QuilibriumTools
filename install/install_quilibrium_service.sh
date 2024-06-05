@@ -86,7 +86,7 @@ git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclien
 git checkout release
 
 # Set the version number
-VERSION="1.4.18"
+VERSION="1.4.19"
 
 # Get the system architecture
 # ARCH=$(uname -m)

@@ -73,7 +73,7 @@ wget https://go.dev/dl/$GO_BINARY || { echo "Failed to download Node! Exiting...
 sudo tar -xvf $GO_BINARY || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
 sudo rm -rf /usr/local/go || { echo "Failed to remove existing Go! Exiting..."; exit_message; exit 1; }
 sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
-sudo rm go1.20.14.linux-amd64.tar.gz || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
+sudo rm $GO_BINARY || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
 
 
 # Set Go environment variables

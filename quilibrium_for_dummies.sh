@@ -450,12 +450,7 @@ echo "
     echo "3) Configure grpCurl                          6) Node Info                    e) Exit"
     echo "4) Update Node                                7) Node Logs"
     echo "5) Check Visibility"
-    echo "6) Node Info"
-    echo "7) Node Logs"
-    echo "8) Restart Node"
-    echo "9) Stop Node"
-    echo "e) Exit"
-
+  
     read -p "Enter your choice: " choice
 
     case $choice in

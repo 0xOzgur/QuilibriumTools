@@ -441,14 +441,14 @@ echo "
   |_____/  \____|_|_|_|_|_|_|_|\____|___/        
                                                  "
 
-    echo "Welcome you Dummy! What would you like to do today?"
+    echo "Welcome you Dummy!"
 
     echo "Please choose an option:"
     
-    echo "1) Install Prerequisites"
-    echo "2) Install Node"
-    echo "3) Configure grpCurl"
-    echo "4) Update Node"
+    echo "1) Install Prerequisites                      4) Update Node                  8) Restart Node"
+    echo "2) Install Node                               5) Check Visibility             9) Stop Node"
+    echo "3) Configure grpCurl                          6) Node Info                    e) Exit"
+    echo "4) Update Node                                7) Node Logs"
     echo "5) Check Visibility"
     echo "6) Node Info"
     echo "7) Node Logs"

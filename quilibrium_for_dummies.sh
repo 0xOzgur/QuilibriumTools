@@ -26,7 +26,7 @@ elif [ "$ARCH" = "aarch64" ]; then
         NODE_BINARY="node-$VERSION-linux-arm64"
         GO_BINARY="go1.20.14.linux-arm64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY="node-$VERSION-darwin-arm64.tar.gz"
+        NODE_BINARY="node-$VERSION-darwin-arm64"
         GO_BINARY="go1.20.14.linux-arm64.tar.gz"
     fi
 fi

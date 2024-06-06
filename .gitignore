@@ -2,3 +2,5 @@ ssh.bat
 visibility/
 visibility/visibility.py
 visibility/peerlist.xml
+backup.sh
+quilibrium_for_pros.sh

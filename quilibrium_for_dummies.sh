@@ -443,16 +443,17 @@ echo "
 
     echo "Welcome you Dummy!"
     echo "Please follow insturctions very carefully"
-    echo "Please install prerequisites first, then install node, lastly configure grpcurl. Do not forget to restart the node after configuration."
-    
+    echo "Please install prerequisites first, then install node, lastly configure grpcurl."
+    echo "Do not forget to restart the node after configuration."
+    echo ""
     echo "Please choose an option:"
-    
+    echo ""
     echo "1) Install Prerequisites                      4) Update Node                  8) Restart Node"
     echo "2) Install Node                               5) Check Visibility             9) Stop Node"
     echo "3) Configure grpCurl                          6) Node Info                    e) Exit"
     echo "4) Update Node                                7) Node Logs"
     echo "5) Check Visibility"
-  
+    echo ""
     read -p "Enter your choice: " choice
 
     case $choice in
@@ -468,6 +469,6 @@ echo "
         e) break ;;
         *) echo "Invalid option, please try again." ;;
     esac
-
+    echo ""
     read -n 1 -s -r -p "Press any key to continue"
 done

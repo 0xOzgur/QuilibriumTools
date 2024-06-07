@@ -3,4 +3,5 @@ visibility/
 visibility/visibility.py
 visibility/peerlist.xml
 quilibrium_for_pros.sh
+backup_ozgur.sh
 backup.sh

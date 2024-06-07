@@ -55,10 +55,10 @@ sudo sysctl -p
 
 
 # Installing Go 1.20.14
-wget https://go.dev/dl/go1.20.14.linux-amd64.tar.gz
-sudo tar -xvf go1.20.14.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
+wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
+sudo tar -xvf go1.22.4.linux-amd64.tar.gz || { echo "Failed to extract Go! Exiting..."; exit_message; exit 1; }
 sudo mv go /usr/local || { echo "Failed to move go! Exiting..."; exit_message; exit 1; }
-sudo rm go1.20.14.linux-amd64.tar.gz || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
+sudo rm go1.22.4.linux-amd64.tar.gz || { echo "Failed to remove downloaded archive! Exiting..."; exit_message; exit 1; }
 
 
 # Step 4: Set Go environment variables

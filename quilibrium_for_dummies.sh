@@ -16,18 +16,18 @@ OS=$(uname -s)
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-amd64"
-        GO_BINARY="go1.22.4.linux-amd64.tar.gz"
+        GO_BINARY="go1.20.14.linux-amd64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-amd64"
-        GO_BINARY="go1.22.4.linux-amd64.tar.gz"
+        GO_BINARY="go1.20.14.linux-amd64.tar.gz"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-arm64"
-        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+        GO_BINARY="go1.20.14.linux-arm64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY="node-$VERSION-darwin-arm64.tar.gz"
-        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+        NODE_BINARY="node-$VERSION-darwin-arm64"
+        GO_BINARY="go1.20.14.linux-arm64.tar.gz"
     fi
 fi
 
@@ -417,45 +417,44 @@ while true; do
     clear
     echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
     echo "Welcome to Quilibrium for Dummies!"
-
+    
 echo "
-    _____        _ _ _ _           _             
-   / ___ \      (_) (_) |         (_)            
-  | |   | |_   _ _| |_| | _   ____ _ _   _ ____  
-  | |   |_| | | | | | | || \ / ___) | | | |    \ 
-   \ \____| |_| | | | | |_) ) |   | | |_| | | | |
-    \_____)\____|_|_|_|____/|_|   |_|\____|_|_|_|
+          _____        _ _ _ _           _             
+         / ___ \      (_) (_) |         (_)            
+        | |   | |_   _ _| |_| | _   ____ _ _   _ ____  
+        | |   |_| | | | | | | || \ / ___) | | | |    \ 
+         \ \____| |_| | | | | |_) ) |   | | |_| | | | |
+          \_____)\____|_|_|_|____/|_|   |_|\____|_|_|_|
                                                  
-              ___                                    
-             / __)                                   
-            | |__ ___   ____                         
-            |  __) _ \ / ___)                        
-            | | | |_| | |                            
-            _|  \___/|_|                            
+                     ___                                    
+                    / __)                                   
+                    | |__ ___   ____                         
+                    |  __) _ \ / ___)                        
+                    | | | |_| | |                            
+                     _|  \___/|_|                            
                                                  
-   _____                     _                   
-  (____ \                   (_)                  
-   _   \ \ _   _ ____  ____  _  ____  ___        
-  | |   | | | | |    \|    \| |/ _  )/___)       
-  | |__/ /| |_| | | | | | | | ( (/ /|___ |       
-  |_____/  \____|_|_|_|_|_|_|_|\____|___/        
+           _____                     _                   
+          (____ \                   (_)                  
+           _   \ \ _   _ ____  ____  _  ____  ___        
+          | |   | | | | |    \|    \| |/ _  )/___)       
+          | |__/ /| |_| | | | | | | | ( (/ /|___ |       
+          |_____/  \____|_|_|_|_|_|_|_|\____|___/        
                                                  "
 
-    echo "Welcome you Dummy! What would you like to do today?"
-
+    echo "Welcome you Dummy!"
+    echo "Please follow insturctions very carefully"
+    echo "Please install prerequisites first, then install node, lastly configure grpcurl."
+    echo "Do not forget to restart the node after configuration."
+    echo "Quilibrium Version: $VERSION"
+    echo ""
     echo "Please choose an option:"
-    
-    echo "1) Install Prerequisites"
-    echo "2) Install Node"
-    echo "3) Configure grpCurl"
-    echo "4) Update Node"
+    echo ""
+    echo "1) Install Prerequisites                      4) Update Node                  8) Restart Node"
+    echo "2) Install Node                               5) Check Visibility             9) Stop Node"
+    echo "3) Configure grpCurl                          6) Node Info                    e) Exit"
+    echo "4) Update Node                                7) Node Logs"
     echo "5) Check Visibility"
-    echo "6) Node Info"
-    echo "7) Node Logs"
-    echo "8) Restart Node"
-    echo "9) Stop Node"
-    echo "e) Exit"
-
+    echo ""
     read -p "Enter your choice: " choice
 
     case $choice in
@@ -471,6 +470,6 @@ echo "
         e) break ;;
         *) echo "Invalid option, please try again." ;;
     esac
-
+    echo ""
     read -n 1 -s -r -p "Press any key to continue"
 done

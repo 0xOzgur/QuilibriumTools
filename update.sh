@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set the version number
+VERSION="1.4.18"
+
 # Step 0: Welcome
 echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth for scalepod.io"
 sleep 2  # Add a 2-second delay

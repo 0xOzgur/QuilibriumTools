@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set the version number
+VERSION="1.4.18"
+
 # Step 0: Welcome
 echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth for scalepod.io"
 sleep 2  # Add a 2-second delay
@@ -18,7 +21,7 @@ HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/node-1.4.18-linux-arm64"
+EXEC_START="$NODE_PATH/node-$VERSION-linux-arm64"
 
 # Step 3:Re-Create Ceremonyclient Service
 rm /lib/systemd/system/ceremonyclient.service

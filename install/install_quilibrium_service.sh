@@ -92,10 +92,10 @@ else
 fi
 cd ~/ceremonyclient/
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git 
-git checkout release
+git checkout release-cdn
 
 # Set the version number
-VERSION="1.4.18"
+VERSION="1.4.19"
 
 # Get the system architecture
 # ARCH=$(uname -m)

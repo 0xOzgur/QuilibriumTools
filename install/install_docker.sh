@@ -55,12 +55,12 @@ echo "⏳Downloading Ceremonyclient"
 sleep 2  # Add a 2-second delay
 git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git
 cd ~/ceremonyclient
-git checkout release
+git checkout release-cdn
 
 # Step 7:Build Docker Container
 echo "⏳Building Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
-docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium:1.4.18 .
+docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium:1.4.19 .
 
 # Step 8:Run Ceremonyclient Container
 echo "✅Running Ceremonyclient Container"

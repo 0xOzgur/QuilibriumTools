@@ -6,7 +6,7 @@ source ~/.bashrc
 clear
 
 # Set the version number
-VERSION="1.4.18"
+VERSION="1.4.19"
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
@@ -169,7 +169,7 @@ else
 fi
 cd ~/ceremonyclient/
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git 
-git checkout release
+git checkout release-cdn
 
 
 
@@ -294,7 +294,7 @@ echo "⏳ Downloading New Release v$VERSION"
 cd  ~/ceremonyclient
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
 git pull
-git checkout release
+git checkout release-cdn
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
@@ -417,7 +417,7 @@ while true; do
     clear
     echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
     echo "Welcome to Quilibrium for Dummies!"
-
+    
 echo "
           _____        _ _ _ _           _             
          / ___ \      (_) (_) |         (_)            
@@ -445,6 +445,8 @@ echo "
     echo "Please follow insturctions very carefully"
     echo "Please install prerequisites first, then install node, lastly configure grpcurl."
     echo "Do not forget to restart the node after configuration."
+    echo ""
+    echo "Quilibrium Version: $VERSION"
     echo ""
     echo "Please choose an option:"
     echo ""

@@ -445,6 +445,7 @@ echo "
     echo "Please follow insturctions very carefully"
     echo "Please install prerequisites first, then install node, lastly configure grpcurl."
     echo "Do not forget to restart the node after configuration."
+    echo ""
     echo "Quilibrium Version: $VERSION"
     echo ""
     echo "Please choose an option:"
@@ -453,6 +454,7 @@ echo "
     echo "2) Install Node                               6) Node Info                    e) Exit"
     echo "3) Configure grpCurl                          7) Node Logs                    "
     echo "4) Update Node                                8) Restart Node"
+
     echo ""
     read -p "Enter your choice: " choice
 

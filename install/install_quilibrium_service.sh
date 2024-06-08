@@ -33,6 +33,15 @@ else
     echo "git is installed"
 fi
 
+if ! command -v cpulimit &> /dev/null
+then
+    echo "cpulimit could not be found"
+    echo "Installing cpulimit..."
+    su -c "apt update && apt install cpulimit -y"
+else
+    echo "cpulimit is installed"
+fi
+
 sudo apt upgrade -y
 
 

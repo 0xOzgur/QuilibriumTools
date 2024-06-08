@@ -53,9 +53,9 @@ sudo sysctl -p
 # Step 6:Download Ceremonyclient
 echo "⏳Downloading Ceremonyclient"
 sleep 2  # Add a 2-second delay
-git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
+git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git
 cd ~/ceremonyclient
-git checkout release
+git checkout release-cdn
 
 # Step 7:Build Docker Container
 echo "⏳Building Ceremonyclient Container"

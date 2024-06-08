@@ -13,7 +13,7 @@ service ceremonyclient stop
 # Step 1:Download Binary
 cd  ~/ceremonyclient
 git pull
-git checkout release
+git checkout release-cdn
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)

@@ -34,13 +34,13 @@ cd ~
 if [ -d "ceremonyclient" ]; then
   echo "Directory ceremonyclient already exists, skipping git clone..."
 else
-  until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git; do
+  until git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git; do
     echo "Git clone failed, retrying..."
     sleep 2
   done
 fi
 cd ~/ceremonyclient/
-git checkout release
+git checkout release-cdn
 
 # Set the version number
 VERSION="1.4.18"

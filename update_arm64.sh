@@ -14,7 +14,7 @@ service ceremonyclient stop
 cd  ~/ceremonyclient
 git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git
 git pull
-git checkout release
+git checkout release-cdn
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)

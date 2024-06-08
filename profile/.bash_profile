@@ -32,9 +32,9 @@ if [ "$ARCH" = "x86_64" ]; then
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY='node-1.4.19-darwin-amd64'
     fi
-elif [ "$ARCH" = "aarch64" ]; then
-    if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-1.4.19-linux-arm64'
+elif [ "$ARCH" = "aarch64" ]; then1.4.19
+    if [ "$OS" = "Linux" ]; then1.4.19
+        NODE_BINARY='node-1.4.19-linux-arm64'1.4.19
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY='node-1.4.19-darwin-arm64'
     fi

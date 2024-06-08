@@ -43,7 +43,7 @@ else
 fi
 
 sudo apt upgrade -y
-
+1.4.19
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."

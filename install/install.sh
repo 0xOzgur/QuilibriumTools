@@ -116,7 +116,7 @@ else
   done
 fi
 cd ~/ceremonyclient/
-git checkout release
+git checkout release-cdn
 
 # Build Ceremonyclient qClient
 echo "⏳Building qCiient"

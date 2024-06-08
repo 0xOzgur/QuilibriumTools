@@ -13,7 +13,7 @@ service ceremonyclient stop
 echo "⏳ Downloading New Release v1.4.19"
 cd  ~/ceremonyclient
 git pull
-git checkout release
+git checkout release-cdn
 
 # Step 7:Build Docker Container
 echo "⏳Building Ceremonyclient Container"

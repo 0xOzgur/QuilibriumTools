@@ -16,18 +16,18 @@ OS=$(uname -s)
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-amd64"
-        GO_BINARY="go1.20.14.linux-amd64.tar.gz"
+        GO_BINARY="go1.22.4.linux-amd64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-amd64"
-        GO_BINARY="go1.20.14.linux-amd64.tar.gz"
+        GO_BINARY="go1.22.44.linux-amd64.tar.gz"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-arm64"
-        GO_BINARY="go1.20.14.linux-arm64.tar.gz"
+        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-arm64"
-        GO_BINARY="go1.20.14.linux-arm64.tar.gz"
+        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
     fi
 fi
 

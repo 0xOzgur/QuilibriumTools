@@ -32,9 +32,9 @@ if [ "$ARCH" = "x86_64" ]; then
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY='node-1.4.19-darwin-amd64'
     fi
-elif [ "$ARCH" = "aarch64" ]; then1.4.19
-    if [ "$OS" = "Linux" ]; then1.4.19
-        NODE_BINARY='node-1.4.19-linux-arm64'1.4.19
+elif [ "$ARCH" = "aarch64" ]; then
+    if [ "$OS" = "Linux" ]; then
+        NODE_BINARY='node-1.4.19-linux-arm64'
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY='node-1.4.19-darwin-arm64'
     fi
@@ -59,3 +59,4 @@ alias nlog='sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat'
 alias nstart='service ceremonyclient start'
 alias nrestart='service ceremonyclient restart'
 alias nstop='service ceremonyclient stop'
+alias benchmark='last_next_difficulty=$(journalctl -u ceremonyclient -ocat -n 100 | grep difficulty | awk -F'"'"'[:,}]'"'"' '"'"'{for(i=1;i<=NF;i++){if($i~"next_difficulty_metric"){gsub(/[ "]/,"",$i); print $(i+1)}}}'"'"' | tail -n 1) && cpus=$(nproc) && echo "" && echo "Your Benchmark Details" && echo "Difficulty: $last_next_difficulty" && echo "CPU(s): $cpus" && if [ $cpus -gt 0 ]; then difficulty_per_core=$(echo "scale=2; ($cpus*$cpus*1000)/$last_next_difficulty" | bc); echo "Score: $difficulty_per_core"; fi'

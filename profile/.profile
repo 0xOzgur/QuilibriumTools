@@ -27,15 +27,15 @@ OS=$(uname -s)
 # Determine the node binary name based on the architecture and OS
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-$VERSION-linux-amd64'
+        NODE_BINARY="node-$VERSION-linux-amd64"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-$VERSION-darwin-amd64'
+        NODE_BINARY="node-$VERSION-darwin-amd64"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-$VERSION-linux-arm64'
+        NODE_BINARY="node-$VERSION-linux-arm64"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-$VERSION-darwin-arm64'
+        NODE_BINARY="node-$VERSION-darwin-arm64"
     fi
 fi
 

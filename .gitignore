@@ -10,3 +10,4 @@ backup/backup_ozgur.sh
 quilibrium_for_pros.sh
 dataworker.py
 balance.sh
+snapshot.sh

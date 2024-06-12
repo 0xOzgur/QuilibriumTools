@@ -17,6 +17,9 @@ alias wttr='curl wttr.in'
 
 neofetch
 
+# Version of the node binary to use
+VERSION="1.4.19"
+
 # Get system information
 ARCH=$(uname -m)
 OS=$(uname -s)
@@ -24,15 +27,15 @@ OS=$(uname -s)
 # Determine the node binary name based on the architecture and OS
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-1.4.19-linux-amd64'
+        NODE_BINARY='node-$VERSION-linux-amd64'
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-1.4.19-darwin-amd64'
+        NODE_BINARY='node-$VERSION-darwin-amd64'
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY='node-1.4.19-linux-arm64'
+        NODE_BINARY='node-$VERSION-linux-arm64'
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY='node-1.4.19-darwin-arm64'
+        NODE_BINARY='node-$VERSION-darwin-arm64'
     fi
 fi
 
@@ -55,4 +58,4 @@ alias nlog='sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat'
 alias nstart='service ceremonyclient start'
 alias nrestart='service ceremonyclient restart'
 alias nstop='service ceremonyclient stop'
-alias benchmark='last_next_difficulty=$(journalctl -u ceremonyclient -ocat -n 100 | grep difficulty | awk -F'"'"'[:,}]'"'"' '"'"'{for(i=1;i<=NF;i++){if($i~"next_difficulty_metric"){gsub(/[ "]/,"",$i); print $(i+1)}}}'"'"' | tail -n 1) && cpus=$(nproc) && echo "" && echo "Your Benchmark Details" && echo "Difficulty: $last_next_difficulty" && echo "CPU(s): $cpus" && if [ $cpus -gt 0 ]; then difficulty_per_core=$(echo "scale=2; ($cpus*$cpus*1000)/$last_next_difficulty" | bc); echo "Score: $difficulty_per_core"; fi'
+alias benchmark='increment=$(journalctl -u ceremonyclient -ocat -n 100 | grep increment | awk -F'\[:,\}\]' '\''{for(i=1;i<=NF;i++){if($i~"increment"){gsub(/[ "]/,"",$i); print $(i+1)}}}'\'' | tail -n 1) && difficulty=$(expr 200000 - $increment / 4) && cpus=$(nproc) && score=$(echo "scale=2; ($cpus*$cpus*1000)/$difficulty" | bc) && echo "" && echo "CPU(s): $cpus" && echo "Increment: $increment" && echo "Difficulty: $difficulty" && echo "Score: $score"'

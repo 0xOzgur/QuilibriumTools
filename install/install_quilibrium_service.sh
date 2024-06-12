@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# Set the version number
+VERSION="1.4.19"
 cd ~
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
@@ -33,17 +34,16 @@ else
     echo "git is installed"
 fi
 
-if ! command -v cpulimit &> /dev/null
-then
-    echo "cpulimit could not be found"
-    echo "Installing cpulimit..."
-    su -c "apt update && apt install cpulimit -y"
-else
-    echo "cpulimit is installed"
-fi
+# if ! command -v cpulimit &> /dev/null
+# then
+#     echo "cpulimit could not be found"
+#     echo "Installing cpulimit..."
+#     su -c "apt update && apt install cpulimit -y"
+# else
+#     echo "cpulimit is installed"
+# fi
 
 sudo apt upgrade -y
-1.4.19
 
 # Step 2: Adjust network buffer sizes
 echo "Adjusting network buffer sizes..."
@@ -85,17 +85,14 @@ cd ~
 if [ -d "ceremonyclient" ]; then
   echo "Directory ceremonyclient already exists, skipping git clone..."
 else
-  until git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git || git clone https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git; do
+  until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git || git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git; do
     echo "Git clone failed, retrying..."
     sleep 2
   done
 fi
 cd ~/ceremonyclient/
-git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git 
-git checkout release-cdn
-
-# Set the version number
-VERSION="1.4.19"
+# git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git || git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git 
+git checkout release
 
 # Get the system architecture
 # ARCH=$(uname -m)

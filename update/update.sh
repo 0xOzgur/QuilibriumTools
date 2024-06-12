@@ -18,6 +18,7 @@ sleep 5  # Add a 5-second delay
 echo "⏳ Downloading New Release v$VERSION"
 cd  ~/ceremonyclient
 git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git
+git checkout main
 git branch -D release
 git pull
 git checkout release

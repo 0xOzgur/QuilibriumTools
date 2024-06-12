@@ -36,7 +36,7 @@ UPDATE_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/updat
 PREREQUISITES_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/install/Install_prerequisites.sh"
 NODE_INSTALL_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/install/install_quilibrium_service.sh"
 GRPCURL_CONFIG_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/configuration/config.sh"
-NODE_UPDATE_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/update.sh"
+NODE_UPDATE_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/update/update.sh"
 CHECK_VISIBILITY_URL="https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/visibility_check.sh"
 
 # Function for each menu option

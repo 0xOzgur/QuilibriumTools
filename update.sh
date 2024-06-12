@@ -1,24 +1,26 @@
 #!/bin/bash
-
+VERSION="1.4.19"
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
-echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.19!"
+echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v$VERSION!"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."
 sleep 5  # Add a 5-second delay
 
 # Stop the ceremonyclient service
-service ceremonyclient stop
+    echo "Updating node..."
+    service ceremonyclient stop
 
 apt install cpulimit -y
 apt install gawk -y #incase it is not installed
 
-# Step 1:Download Binary
-echo "⏳ Downloading New Release v1.4.19"
+# Download Binary
+echo "⏳ Downloading New Release v$VERSION"
 cd  ~/ceremonyclient
-git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git || git remote set-url origin https://git.quilibrium-mirror.ch/agostbiro/ceremonyclient.git
+git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git
+git branch -D release
 git pull
-git checkout release-cdn
+git checkout release
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
@@ -27,7 +29,7 @@ HOME=$(eval echo ~$HOME_DIR)
 NODE_PATH="$HOME/ceremonyclient/node"
 EXEC_START="$NODE_PATH/release_autorun.sh"
 
-# Step 3:Re-Create Ceremonyclient Service
+# Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 SERVICE_FILE="/lib/systemd/system/ceremonyclient.service"
@@ -64,7 +66,7 @@ else
     fi
 fi
 
-# Step 4:Start the ceremonyclient service
+# Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 sudo systemctl daemon-reload
@@ -72,7 +74,7 @@ sudo systemctl enable ceremonyclient
 sudo service ceremonyclient start
 
 # See the logs of the ceremonyclient service
-echo "🎉 Welcome to Quilibrium Ceremonyclient v1.4.19"
+echo "🎉 Welcome to Quilibrium Ceremonyclient v$VERSION"
 echo "⏳ Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 5  # Add a 5-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

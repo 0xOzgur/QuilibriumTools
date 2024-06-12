@@ -11,8 +11,8 @@ sleep 5  # Add a 5-second delay
     echo "Updating node..."
     service ceremonyclient stop
 
-apt install cpulimit -y
-apt install gawk -y #incase it is not installed
+# apt install cpulimit -y
+# apt install gawk -y #incase it is not installed
 
 # Download Binary
 echo "⏳ Downloading New Release v$VERSION"

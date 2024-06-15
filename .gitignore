@@ -8,3 +8,4 @@ quilibrium_for_pros.sh
 backup/
 dataworker.py
 dataworker.json
+balance.sh

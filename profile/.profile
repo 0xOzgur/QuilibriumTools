@@ -18,7 +18,7 @@ alias wttr='curl wttr.in'
 neofetch
 
 # Version of the node binary to use
-VERSION="1.4.19"
+VERSION="1.4.19.1"
 
 # Get system information
 ARCH=$(uname -m)

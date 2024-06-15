@@ -1,6 +1,6 @@
 #!/bin/bash
 # Set the version number
-VERSION="1.4.19"
+VERSION="1.4.19.1"
 cd ~
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "

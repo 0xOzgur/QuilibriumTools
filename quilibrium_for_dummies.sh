@@ -17,9 +17,11 @@ if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-amd64"
         GO_BINARY="go1.22.4.linux-amd64.tar.gz"
+        QCLIENT_BINARY="qclient-$VERSION-linux-amd64"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-amd64"
         GO_BINARY="go1.22.44.linux-amd64.tar.gz"
+        QCLIENT_BINARY="qclient-$VERSION-darwin-arm64"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
@@ -28,6 +30,7 @@ elif [ "$ARCH" = "aarch64" ]; then
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-arm64"
         GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+        QCLIENT_BINARY="qclient-$VERSION-linux-arm64"
     fi
 fi
 

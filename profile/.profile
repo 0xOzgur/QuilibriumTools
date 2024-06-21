@@ -40,20 +40,18 @@ elif [ "$ARCH" = "aarch64" ]; then
 fi
 
 
-# Shortcuts for Docker
-alias dpeer-count='cd ~/ceremonyclient/ && docker compose exec node grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l'
-alias dnode-info='cd ~/ceremonyclient/ && docker compose exec node node -node-info && cd ~'
-alias ddb-console='cd ~/ceremonyclient/ && - docker compose exec node node --db-console && cd ~'
-alias dbalance='cd ~/ceremonyclient/ && docker compose exec node node -balance && cd ~'
-alias dlog='cd ~/ceremonyclient/ && docker compose logs -f -n, --tail 100 && cd ~'
-alias dstart='cd ~/ceremonyclient/ && docker compose up -d && cd ~'
-alias drestart='cd ~/ceremonyclient/ && docker compose down && docker compose up -d && cd ~'
-alias dstop='cd ~/ceremonyclient/ && docker compose down && cd ~'
 # Shortcuts for Service
 alias peer-count='cd ~/ceremonyclient/node && grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l && cd ~'
-alias node-info='cd ~/ceremonyclient/node && ./${NODE_BINARY} -node-info && cd ~'
-alias db-console='cd ~/ceremonyclient/node && ./${NODE_BINARY} --db-console && cd ~'
-alias balance='cd ~/ceremonyclient/node && ./${NODE_BINARY} -balance && cd ~'
+node-info() {
+    cd ~/ceremonyclient/node && ./${NODE_BINARY} -node-info && cd ~
+}
+db-console() {
+    cd ~/ceremonyclient/node && ./${NODE_BINARY} --db-console && cd ~
+}
+
+balance() {
+    cd ~/ceremonyclient/node && ./${NODE_BINARY} -balance && cd ~
+}
 alias nlog='sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat'
 alias nstart='service ceremonyclient start'
 alias nrestart='service ceremonyclient restart'

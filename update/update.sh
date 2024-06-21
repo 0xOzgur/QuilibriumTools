@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="1.4.19.1"
+VERSION="1.4.20"
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v$VERSION!"
@@ -22,6 +22,41 @@ git checkout main
 git branch -D release
 git pull
 git checkout release
+
+# Determine the ExecStart line based on the architecture
+ARCH=$(uname -m)
+OS=$(uname -s)
+
+# Determine the node binary name based on the architecture and OS
+if [ "$ARCH" = "x86_64" ]; then
+    if [ "$OS" = "Linux" ]; then
+        NODE_BINARY="node-$VERSION-linux-amd64"
+        GO_BINARY="go1.22.4.linux-amd64.tar.gz"
+        QCLIENT_BINARY="qclient-$VERSION-linux-amd64"
+    elif [ "$OS" = "Darwin" ]; then
+        NODE_BINARY="node-$VERSION-darwin-amd64"
+        GO_BINARY="go1.22.44.linux-amd64.tar.gz"
+        QCLIENT_BINARY="qclient-$VERSION-darwin-arm64"
+    fi
+elif [ "$ARCH" = "aarch64" ]; then
+    if [ "$OS" = "Linux" ]; then
+        NODE_BINARY="node-$VERSION-linux-arm64"
+        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+    elif [ "$OS" = "Darwin" ]; then
+        NODE_BINARY="node-$VERSION-darwin-arm64"
+        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+        QCLIENT_BINARY="qclient-$VERSION-linux-arm64"
+    fi
+fi
+
+# Step 4:Update qClient
+echo "Updating qClient"
+sleep 1  # Add a 1-second delay
+cd ~/ceremonyclient/client
+rm -f qclient
+wget https://releases.quilibrium.com/$QCLIENT_BINARY
+mv $QCLIENT_BINARY qclient
+chmod +x qclient
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)

@@ -17,29 +17,6 @@ alias wttr='curl wttr.in'
 
 neofetch
 
-# Version of the node binary to use
-VERSION="1.4.19.1"
-
-# Get system information
-ARCH=$(uname -m)
-OS=$(uname -s)
-
-# Determine the node binary name based on the architecture and OS
-if [ "$ARCH" = "x86_64" ]; then
-    if [ "$OS" = "Linux" ]; then
-        NODE_BINARY="node-$VERSION-linux-amd64"
-    elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY="node-$VERSION-darwin-amd64"
-    fi
-elif [ "$ARCH" = "aarch64" ]; then
-    if [ "$OS" = "Linux" ]; then
-        NODE_BINARY="node-$VERSION-linux-arm64"
-    elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY="node-$VERSION-darwin-arm64"
-    fi
-fi
-
-
 # Shortcuts for Docker
 alias dpeer-count='cd ~/ceremonyclient/ && docker compose exec node grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l'
 alias dnode-info='cd ~/ceremonyclient/ && docker compose exec node node -node-info && cd ~'
@@ -50,12 +27,13 @@ alias dstart='cd ~/ceremonyclient/ && docker compose up -d && cd ~'
 alias drestart='cd ~/ceremonyclient/ && docker compose down && docker compose up -d && cd ~'
 alias dstop='cd ~/ceremonyclient/ && docker compose down && cd ~'
 # Shortcuts for Service
-alias peer-count='cd ~/ceremonyclient/node && grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l && cd ~'
-alias node-info='cd ~/ceremonyclient/node && ./${NODE_BINARY} -node-info && cd ~'
-alias db-console='cd ~/ceremonyclient/node && ./${NODE_BINARY} --db-console && cd ~'
-alias balance='cd ~/ceremonyclient/node && ./${NODE_BINARY} -balance && cd ~'
-alias nlog='sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat'
-alias nstart='service ceremonyclient start'
-alias nrestart='service ceremonyclient restart'
-alias nstop='service ceremonyclient stop'
+alias peer-count="cd ~/ceremonyclient/node && grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l && cd ~"
+alias node-info="cd ~/ceremonyclient/node && ./node-1.4.20-linux-amd64 -node-info && cd ~"
+alias db-console="cd ~/ceremonyclient/node && ./node-1.4.20-linux-amd64 --db-console && cd ~"
+alias balance="cd ~/ceremonyclient/node && ./node-1.4.20-linux-amd64 -balance && cd ~"
+alias nlog="sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat"
+alias increment="sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat | time_taken"
+alias nstart="service ceremonyclient start"
+alias nrestart="service ceremonyclient restart"
+alias nstop="service ceremonyclient stop"
 alias benchmark='increment=$(journalctl -u ceremonyclient -ocat -n 100 | grep increment | awk -F'\[:,\}\]' '\''{for(i=1;i<=NF;i++){if($i~"increment"){gsub(/[ "]/,"",$i); print $(i+1)}}}'\'' | tail -n 1) && difficulty=$(expr 200000 - $increment / 4) && cpus=$(nproc) && score=$(echo "scale=2; ($cpus*$cpus*1000)/$difficulty" | bc) && echo "" && echo "CPU(s): $cpus" && echo "Increment: $increment" && echo "Difficulty: $difficulty" && echo "Score: $score"'

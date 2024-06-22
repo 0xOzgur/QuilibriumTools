@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the version number
-VERSION="1.4.19"
+VERSION="1.4.20"
 
 # Step 0: Welcome
 echo "This script is made with ❤️ by https://quilibrium.space @ 0xOzgur.eth for scalepod.io"

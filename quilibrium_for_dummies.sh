@@ -6,7 +6,7 @@ source ~/.bashrc
 clear
 
 # Set the version number
-VERSION="1.4.19"
+VERSION="1.4.20"
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)

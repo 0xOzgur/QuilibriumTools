@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="1.4.20.1"
+VERSION="1.4.21"
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v$VERSION!"

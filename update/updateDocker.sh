@@ -2,7 +2,9 @@
 
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur.eth"
+
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v1.4.21.1!"
+
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
 
@@ -10,7 +12,9 @@ sleep 10  # Add a 10-second delay
 service ceremonyclient stop
 
 # Step 1:Download Binary
+
 echo "⏳ Downloading New Release v1.4.21.1"
+
 cd  ~/ceremonyclient
 git pull
 git checkout release-cdn
@@ -18,7 +22,9 @@ git checkout release-cdn
 # Step 7:Build Docker Container
 echo "⏳Building Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
+
 docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium -t quilibrium:1.4.21.1 .
+
 
 # Step 8:Run Ceremonyclient Container
 echo "✅Running Ceremonyclient Container"

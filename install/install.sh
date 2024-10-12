@@ -145,9 +145,6 @@ else
     echo "ceremonyclient.service file does not exist. No action taken."
 fi
 
-CPU_THREADS=$(nproc)
-CPU_QUOTA=$(( CPU_THREADS * 90 ))
-
 sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
@@ -158,6 +155,8 @@ Restart=always
 RestartSec=5s
 WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START
+KillSignal=SIGINT
+TimeoutStopSec=30s
 
 [Install]
 WantedBy=multi-user.target

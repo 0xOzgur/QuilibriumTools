@@ -6,7 +6,7 @@ source ~/.bashrc
 clear
 
 # Set the version number
-VERSION="2.0"
+VERSION="2.0.0"
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
@@ -102,7 +102,7 @@ while true; do
     clear
     echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
     echo "Welcome to Quilibrium for Dummies!"
-    
+    0xOzgur
 echo "
           _____        _ _ _ _           _             
          / ___ \      (_) (_) |         (_)            

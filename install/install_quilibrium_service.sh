@@ -1,9 +1,9 @@
 #!/bin/bash
 # Set the version number
-VERSION="2.0"
+VERSION="2.0.0"
 cd ~
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
+echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space "
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
@@ -33,15 +33,6 @@ then
 else
     echo "git is installed"
 fi
-
-# if ! command -v cpulimit &> /dev/null
-# then
-#     echo "cpulimit could not be found"
-#     echo "Installing cpulimit..."
-#     su -c "apt update && apt install cpulimit -y"
-# else
-#     echo "cpulimit is installed"
-# fi
 
 sudo apt upgrade -y
 

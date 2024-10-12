@@ -1,29 +1,73 @@
 #!/bin/bash
 
 # Set the version number
-VERSION="2.0"
+VERSION="2.0.0"
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
 OS=$(uname -s)
 
 # Determine the node binary name based on the architecture and OS
+# Check if NODE_VERSION is empty
+if [ -z "$NODE_VERSION" ]; then
+    NODE_VERSION=$(curl -s https://releases.quilibrium.com/release | grep -E "^node-[0-9]+(\.[0-9]+)*" | grep -v "dgst" | sed 's/^node-//' | cut -d '-' -f 1 | head -n 1)
+    if [ -z "$NODE_VERSION" ]; then
+        echo "❌ Error: Unable to determine NODE_VERSION automatically."
+        echo "The script cannot proceed without a correct node version number." 
+        echo "Please try the manual step by step installation instead:"
+        echo "https://docs.quilibrium.one/start/tutorials/node-step-by-step-installation"
+        echo
+        exit 1
+    else
+        echo "✅ Automatically determined NODE_VERSION: $NODE_VERSION"
+    fi
+else
+    echo "✅ Using specified NODE_VERSION: $NODE_VERSION"
+fi
+
+# Determine qclient latest version
+# Check if QCLIENT_VERSION is empty
+if [ -z "$QCLIENT_VERSION" ]; then
+    QCLIENT_VERSION=$(curl -s https://releases.quilibrium.com/qclient-release | grep -E "^qclient-[0-9]+(\.[0-9]+)*" | sed 's/^qclient-//' | cut -d '-' -f 1 |  head -n 1)
+    if [ -z "$QCLIENT_VERSION" ]; then
+        echo "⚠️ Warning: Unable to determine QCLIENT_VERSION automatically. Continuing without it."
+        echo "The script won't be able to install the qclient, but it will still install your node."
+        echo "You can install the qclient later manually if you need to."
+        echo
+        sleep 1
+    else
+        echo "✅ Automatically determined QCLIENT_VERSION: $QCLIENT_VERSION"
+    fi
+else
+    echo "✅ Using specified QCLIENT_VERSION: $QCLIENT_VERSION"
+fi
+
+echo
+
+# Determine the node binary name based on the architecture and OS
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY="node-$VERSION-linux-amd64"
+        NODE_BINARY="node-$NODE_VERSION-linux-amd64"
         GO_BINARY="go1.22.4.linux-amd64.tar.gz"
+        [ -n "$QCLIENT_VERSION" ] && QCLIENT_BINARY="qclient-$QCLIENT_VERSION-linux-amd64"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY="node-$VERSION-darwin-amd64"
-        GO_BINARY="go1.22.44.linux-amd64.tar.gz"
+        NODE_BINARY="node-$NODE_VERSION-darwin-amd64"
+        GO_BINARY="go1.22.4.darwin-amd64.tar.gz"
+        [ -n "$QCLIENT_VERSION" ] && QCLIENT_BINARY="qclient-$QCLIENT_VERSION-darwin-amd64"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
-        NODE_BINARY="node-$VERSION-linux-arm64"
+        NODE_BINARY="node-$NODE_VERSION-linux-arm64"
         GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+        [ -n "$QCLIENT_VERSION" ] && QCLIENT_BINARY="qclient-$QCLIENT_VERSION-linux-arm64"
     elif [ "$OS" = "Darwin" ]; then
-        NODE_BINARY="node-$VERSION-darwin-arm64"
-        GO_BINARY="go1.22.4.linux-arm64.tar.gz"
+        NODE_BINARY="node-$NODE_VERSION-darwin-arm64"
+        GO_BINARY="go1.22.4.darwin-arm64.tar.gz"
+        [ -n "$QCLIENT_VERSION" ] && QCLIENT_BINARY="qclient-$QCLIENT_VERSION-darwin-arm64"
     fi
+else
+    echo "❌ Error: Unsupported system architecture ($ARCH) or operating system ($OS)."
+    exit 1
 fi
 
 echo "Installing prerequisites..."

@@ -3,7 +3,7 @@
 cd ~
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
+echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay

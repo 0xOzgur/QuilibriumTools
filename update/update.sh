@@ -1,7 +1,9 @@
 #!/bin/bash
-VERSION="2.0"
+
+VERSION="2.0.0"
+
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
+echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v$VERSION!"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."
@@ -10,6 +12,20 @@ sleep 5  # Add a 5-second delay
 # Stop the ceremonyclient service
     echo "Updating node..."
     service ceremonyclient stop
+    echo "⏳ Stopping the ceremonyclient service if it exists..."
+if systemctl is-active --quiet ceremonyclient; then
+    if sudo systemctl stop ceremonyclient; then
+        echo "🔴 Service stopped successfully."
+        echo
+    else
+        echo "❌ Failed to stop the ceremonyclient service." >&2
+        echo
+    fi
+else
+    echo "ℹ️ Ceremonyclient service is not active or does not exist."
+    echo
+fi
+sleep 1
 
 # apt install cpulimit -y
 # apt install gawk -y #incase it is not installed
@@ -22,6 +38,8 @@ git checkout main
 git branch -D release
 git pull
 git checkout release
+echo "✅ Downloaded the latest changes successfully."
+echo
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
@@ -50,20 +68,32 @@ elif [ "$ARCH" = "aarch64" ]; then
 fi
 
 # Step 4:Update qClient
-echo "Updating qClient"
-sleep 1  # Add a 1-second delay
-cd ~/ceremonyclient/client
-rm -f qclient
-wget https://releases.quilibrium.com/$QCLIENT_BINARY
-mv $QCLIENT_BINARY qclient
-chmod +x qclient
+if [ -n "$QCLIENT_BINARY" ]; then
+    echo "⏳ Updating qClient..."
+    sleep 1  # Add a 1-second delay
+    cd ~/ceremonyclient/client
+
+    if ! wget https://releases.quilibrium.com/$QCLIENT_BINARY; then
+        echo "❌ Error: Failed to download qClient binary."
+        echo "Your node will still work, but you'll need to install the qclient manually later if needed."
+    else
+        mv $QCLIENT_BINARY qclient
+        chmod +x qclient
+        echo "✅ qClient binary downloaded successfully."
+    fi
+else
+    echo "ℹ️ Skipping qClient download as QCLIENT_BINARY could not be determined earlier."
+    echo "Your node will still work, but you'll need to install the qclient manually later if needed."
+fi
+
+echo
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/release_autorun.sh"
+EXEC_START="$NODE_PATH/$NODE_BINARY"
 
 # Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
@@ -109,10 +139,10 @@ echo "✅ Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
-sudo service ceremonyclient start
+sudo systemctl start ceremonyclient
 
 # See the logs of the ceremonyclient service
 echo "🎉 Welcome to Quilibrium Ceremonyclient v$VERSION"
 echo "⏳ Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
-sleep 5  # Add a 5-second delay
+sleep 2  # Add a 2-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

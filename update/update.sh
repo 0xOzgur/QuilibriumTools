@@ -169,20 +169,26 @@ done
 
 echo
 
-# Get the current user's home directory
+#==========================
+# SERVICE UPDATE
+#==========================
+
+#Set variables
 HOME=$(eval echo ~$HOME_DIR)
 
-# Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/NODE_BINARY"
+EXEC_START="$NODE_PATH/$NODE_BINARY"
 
-# Re-Create Ceremonyclient Service
-echo "⏳ Re-Creating Ceremonyclient Service"
-sleep 2  # Add a 2-second delay
-SERVICE_FILE="/lib/systemd/system/ceremonyclient.service"
-if [ ! -f "$SERVICE_FILE" ]; then
-    echo "📝 Creating new ceremonyclient service file..."
-    if ! sudo tee "$SERVICE_FILE" > /dev/null <<EOF
+# Check if the node is running via cluster script or para.sh and skip
+if [ -f "$SERVICE_FILE" ] && (grep -q "ExecStart=/root/scripts/qnode_cluster_run.sh" "$SERVICE_FILE" || grep -q "ExecStart=.*para\.sh" "$SERVICE_FILE"); then
+    echo "⚠️ You are running a cluster or para.sh script. Skipping service file update..."
+    echo
+else
+    # Build service file
+    echo "⏳ Rebuilding Ceremonyclient Service..."
+    if [ ! -f "$SERVICE_FILE" ]; then
+        echo "⏳ Creating new ceremonyclient service file..."
+        if ! sudo tee "$SERVICE_FILE" > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
 
@@ -198,22 +204,43 @@ TimeoutStopSec=30s
 [Install]
 WantedBy=multi-user.target
 EOF
-    then
-        echo "❌ Error: Failed to create ceremonyclient service file." >&2
-        exit 1
-    fi
-else
-    echo "🔍 Checking existing ceremonyclient service file..."
-    # Check if the required lines exist and if they are different
-    if ! grep -q "WorkingDirectory=$NODE_PATH" "$SERVICE_FILE" || ! grep -q "ExecStart=$EXEC_START" "$SERVICE_FILE"; then
-        echo "🔄 Updating existing ceremonyclient service file..."
-        # Replace the existing lines with new values
-        sudo sed -i "s|WorkingDirectory=.*|WorkingDirectory=$NODE_PATH|" "$SERVICE_FILE"
-        sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" "$SERVICE_FILE"
+        then
+            echo "❌ Error: Failed to create ceremonyclient service file." >&2
+            exit 1
+        fi
     else
-        echo "✅ No changes needed."
+        echo "⏳ Checking existing ceremonyclient service file..."  
+
+        # Function to add or update a line in the [Service] section
+        update_service_section() {
+            local key="$1"
+            local value="$2"
+            if grep -q "^$key=" "$SERVICE_FILE"; then
+                current_value=$(grep "^$key=" "$SERVICE_FILE" | cut -d'=' -f2-)
+                if [ "$current_value" != "$value" ]; then
+                    echo "⏳ Updating $key from $current_value to $value in the service file..."
+                    sudo sed -i "s|^$key=.*|$key=$value|" "$SERVICE_FILE"
+                else
+                    echo "✅ $key=$value already exists and is correct."
+                fi
+            else
+                echo "⏳ Adding $key=$value to the service file..."
+                sudo sed -i "/^\[Service\]/,/^\[/ {
+                    /^\[Install\]/i $key=$value
+                }" "$SERVICE_FILE"
+            fi
+        }
+
+        # Update all required lines in the [Service] section
+        update_service_section "WorkingDirectory" "$NODE_PATH"
+        update_service_section "ExecStart" "$EXEC_START"
+        update_service_section "KillSignal" "SIGINT"
+        update_service_section "TimeoutStopSec" "30s"
     fi
 fi
+
+echo "✅ Service file update completed."
+echo
 
 # Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"

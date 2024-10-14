@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.0.0"
+VERSION="2.0.0.1"
 
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
@@ -41,6 +41,33 @@ git checkout release
 echo "✅ Downloaded the latest changes successfully."
 echo
 
+# Get the current OS and architecture
+OS_ARCH=$(get_os_arch)
+
+# Fetch the list of files from the release page
+FILES=$(curl -s $BASE_URL | grep -oE "node-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+
+
+# Change to the download directory
+cd ~/ceremonyclient/node
+
+# Download each file
+for file in $FILES; do
+    echo "Downloading $file..."
+    wget "https://releases.quilibrium.com/$file"
+    
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded $file"
+    else
+        echo "Failed to download $file"
+    fi
+    
+    echo "------------------------"
+done
+
+
+
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
 OS=$(uname -s)
@@ -50,11 +77,11 @@ if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-amd64"
         GO_BINARY="go1.22.4.linux-amd64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-linux-amd64"
+        QCLIENT_BINARY="qclient-2.0.0-linux-amd64"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-amd64"
         GO_BINARY="go1.22.44.linux-amd64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-darwin-arm64"
+        QCLIENT_BINARY="qclient-2.0.0-darwin-arm64"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
@@ -63,28 +90,40 @@ elif [ "$ARCH" = "aarch64" ]; then
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-arm64"
         GO_BINARY="go1.22.4.linux-arm64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-linux-arm64"
+        QCLIENT_BINARY="qclient-2.0.0-linux-arm64"
     fi
 fi
 
 # Step 4:Update qClient
-if [ -n "$QCLIENT_BINARY" ]; then
-    echo "⏳ Updating qClient..."
-    sleep 1  # Add a 1-second delay
-    cd ~/ceremonyclient/client
 
-    if ! wget https://releases.quilibrium.com/$QCLIENT_BINARY; then
-        echo "❌ Error: Failed to download qClient binary."
-        echo "Your node will still work, but you'll need to install the qclient manually later if needed."
+# Get the current OS and architecture
+OS_ARCH=$(get_os_arch)
+
+# Fetch the list of files from the release page
+FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+
+# Change to the download directory
+cd ~/ceremonyclient/client
+
+# Download each file
+for file in $FILES; do
+    echo "Downloading $file..."
+    wget "https://releases.quilibrium.com/$file"
+    
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded $file"
     else
+        echo "❌ Error: Failed to download $file"
+        echo "Your node will still work, but you'll need to install the qclient manually later if needed."
+    fi
+    
+    echo "------------------------"
+done
+
         mv $QCLIENT_BINARY qclient
         chmod +x qclient
-        echo "✅ qClient binary downloaded successfully."
-    fi
-else
-    echo "ℹ️ Skipping qClient download as QCLIENT_BINARY could not be determined earlier."
-    echo "Your node will still work, but you'll need to install the qclient manually later if needed."
-fi
+        echo "✅ qClient binary downloaded and configured successfully."
 
 echo
 

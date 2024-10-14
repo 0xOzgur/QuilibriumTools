@@ -174,15 +174,23 @@ HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/$NODE_BINARY"
+EXEC_START="$NODE_PATH/release_autorun.sh"
 
-# Re-Create Ceremonyclient Service
-echo "⏳ Re-Creating Ceremonyclient Service"
+# Step 6:Create Ceremonyclient Service
+echo "⏳ Creating Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
-SERVICE_FILE="/lib/systemd/system/ceremonyclient.service"
-if [ ! -f "$SERVICE_FILE" ]; then
-    echo "📝 Creating new ceremonyclient service file..."
-    if ! sudo tee "$SERVICE_FILE" > /dev/null <<EOF
+
+# Check if the file exists before attempting to remove it
+if [ -f "/lib/systemd/system/ceremonyclient.service" ]; then
+    # If the file exists, remove it
+    rm /lib/systemd/system/ceremonyclient.service
+    echo "ceremonyclient.service file removed."
+else
+    # If the file does not exist, inform the user
+    echo "ceremonyclient.service file does not exist. No action taken."
+fi
+
+sudo tee /lib/systemd/system/ceremonyclient.service > /dev/null <<EOF
 [Unit]
 Description=Ceremony Client Go App Service
 
@@ -198,22 +206,6 @@ TimeoutStopSec=30s
 [Install]
 WantedBy=multi-user.target
 EOF
-    then
-        echo "❌ Error: Failed to create ceremonyclient service file." >&2
-        exit 1
-    fi
-else
-    echo "🔍 Checking existing ceremonyclient service file..."
-    # Check if the required lines exist and if they are different
-    if ! grep -q "WorkingDirectory=$NODE_PATH" "$SERVICE_FILE" || ! grep -q "ExecStart=$EXEC_START" "$SERVICE_FILE"; then
-        echo "🔄 Updating existing ceremonyclient service file..."
-        # Replace the existing lines with new values
-        sudo sed -i "s|WorkingDirectory=.*|WorkingDirectory=$NODE_PATH|" "$SERVICE_FILE"
-        sudo sed -i "s|ExecStart=.*|ExecStart=$EXEC_START|" "$SERVICE_FILE"
-    else
-        echo "✅ No changes needed."
-    fi
-fi
 
 # Start the ceremonyclient service
 echo "✅ Starting Ceremonyclient Service"

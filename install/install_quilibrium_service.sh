@@ -87,6 +87,10 @@ cd ~/ceremonyclient/
 # git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git || git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git 
 git checkout release
 
+#==========================
+# NODE BINARY DOWNLOAD
+#==========================
+
 get_os_arch() {
     local os=$(uname -s | tr '[:upper:]' '[:lower:]')
     local arch=$(uname -m)
@@ -105,33 +109,45 @@ get_os_arch() {
     echo "${os}-${arch}"
 }
 
-# Base URL for the Quilibrium releases
-BASE_URL="https://releases.quilibrium.com/release"
-
 # Get the current OS and architecture
 OS_ARCH=$(get_os_arch)
 
-# Fetch the list of files from the release page
-FILES=$(curl -s $BASE_URL | grep -oE "node-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+# Base URL for the Quilibrium releases
+RELEASE_FILES_URL="https://releases.quilibrium.com/release"
 
+# Fetch the list of files from the release page
+# Updated regex to allow for an optional fourth version number
+RELEASE_FILES=$(curl -s $RELEASE_FILES_URL | grep -oE "node-[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
 
 # Change to the download directory
 cd ~/ceremonyclient/node
 
 # Download each file
-for file in $FILES; do
+for file in $RELEASE_FILES; do
     echo "Downloading $file..."
-    wget "https://releases.quilibrium.com/$file"
+    curl -L -o "$file" "https://releases.quilibrium.com/$file"
     
     # Check if the download was successful
     if [ $? -eq 0 ]; then
         echo "Successfully downloaded $file"
+        # Check if the file is the base binary (without .dgst or .sig suffix)
+        if [[ $file =~ ^node-[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?-${OS_ARCH}$ ]]; then
+            echo "Making $file executable..."
+            chmod +x "$file"
+            if [ $? -eq 0 ]; then
+                echo "Successfully made $file executable"
+            else
+                echo "Failed to make $file executable"
+            fi
+        fi
     else
         echo "Failed to download $file"
     fi
     
     echo "------------------------"
 done
+
+echo "✅  Node binary download completed."
 
 
 
@@ -168,7 +184,7 @@ sleep 1  # Add a 1-second delay
 OS_ARCH=$(get_os_arch)
 
 # Base URL for the Quilibrium releases
-BASE_URL="https://releases.quilibrium.com/release"
+BASE_URL="https://releases.quilibrium.com/qclient-release"
 
 # Fetch the list of files from the release page
 FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
@@ -192,8 +208,8 @@ for file in $FILES; do
     echo "------------------------"
 done
 
-        mv $QCLIENT_BINARY qclient
-        chmod +x qclient
+        //
+        chmod +x qclient*
         echo "✅ qClient binary downloaded and configured successfully."
 
 echo

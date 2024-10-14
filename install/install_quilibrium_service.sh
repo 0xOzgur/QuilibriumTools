@@ -87,6 +87,22 @@ cd ~/ceremonyclient/
 # git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git || git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git 
 git checkout release
 
+get_os_arch() {
+    local arch=$(uname -m)
+    local os=$(uname -s | tr '[:upper:]' '[:lower:]')
+    
+    case $arch in
+        x86_64)
+            arch="amd64"
+            ;;
+        aarch64)
+            arch="arm64"
+            ;;
+    esac
+    
+    echo "${os}-${arch}"
+}
+
 # Get the current OS and architecture
 OS_ARCH=$(get_os_arch)
 

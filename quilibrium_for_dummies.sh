@@ -102,7 +102,7 @@ stop_node() {
 # Menu
 while true; do
     clear
-    echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
+    echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
     echo "Welcome to Quilibrium for Dummies!"
     0xOzgur
 echo "

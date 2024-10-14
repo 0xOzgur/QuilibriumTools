@@ -123,7 +123,7 @@ fi
 OS_ARCH=$(get_os_arch)
 
 # Base URL for the Quilibrium releases
-BASE_URL="https://releases.quilibrium.com/release"
+BASE_URL="https://releases.quilibrium.com/qclient-release"
 
 # Fetch the list of files from the release page
 FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
@@ -147,8 +147,8 @@ for file in $FILES; do
     echo "------------------------"
 done
 
-        mv $QCLIENT_BINARY qclient
-        chmod +x qclient
+        //
+        chmod +x qclient*
         echo "✅ qClient binary downloaded and configured successfully."
 
 echo

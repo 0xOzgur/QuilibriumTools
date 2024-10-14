@@ -104,7 +104,6 @@ while true; do
     clear
     echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
     echo "Welcome to Quilibrium for Dummies!"
-    0xOzgur
 echo "
           _____        _ _ _ _           _             
          / ___ \      (_) (_) |         (_)            

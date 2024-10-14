@@ -64,6 +64,9 @@ get_os_arch() {
 # Get the current OS and architecture
 OS_ARCH=$(get_os_arch)
 
+# Base URL for the Quilibrium releases
+BASE_URL="https://releases.quilibrium.com/release"
+
 # Fetch the list of files from the release page
 FILES=$(curl -s $BASE_URL | grep -oE "node-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
 

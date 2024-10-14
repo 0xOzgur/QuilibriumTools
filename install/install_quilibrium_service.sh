@@ -105,6 +105,9 @@ get_os_arch() {
     echo "${os}-${arch}"
 }
 
+# Base URL for the Quilibrium releases
+BASE_URL="https://releases.quilibrium.com/release"
+
 # Get the current OS and architecture
 OS_ARCH=$(get_os_arch)
 

@@ -88,18 +88,20 @@ cd ~/ceremonyclient/
 git checkout release
 
 get_os_arch() {
-    local arch=$(uname -m)
     local os=$(uname -s | tr '[:upper:]' '[:lower:]')
-    
-    case $arch in
-        x86_64)
-            arch="amd64"
-            ;;
-        aarch64)
-            arch="arm64"
-            ;;
+    local arch=$(uname -m)
+
+    case "$os" in
+        linux|darwin) ;;
+        *) echo "Unsupported operating system: $os" >&2; return 1 ;;
     esac
-    
+
+    case "$arch" in
+        x86_64|amd64) arch="amd64" ;;
+        arm64|aarch64) arch="arm64" ;;
+        *) echo "Unsupported architecture: $arch" >&2; return 1 ;;
+    esac
+
     echo "${os}-${arch}"
 }
 

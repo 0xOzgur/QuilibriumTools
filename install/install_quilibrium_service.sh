@@ -1,11 +1,11 @@
 #!/bin/bash
 # Set the version number
 
-VERSION="1.4.21.1"
+VERSION="2.0.0.1"
 
 cd ~
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space "
+echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space "
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "The script doesn't install GO or GrpCurl packages. If you want to install them please visit https://docs.quilibrium.space/installing-prerequisites page."
 echo "⏳Enjoy and sit back while you are building your Quilibrium Node!"
@@ -35,15 +35,6 @@ then
 else
     echo "git is installed"
 fi
-
-# if ! command -v cpulimit &> /dev/null
-# then
-#     echo "cpulimit could not be found"
-#     echo "Installing cpulimit..."
-#     su -c "apt update && apt install cpulimit -y"
-# else
-#     echo "cpulimit is installed"
-# fi
 
 sudo apt upgrade -y
 
@@ -96,6 +87,33 @@ cd ~/ceremonyclient/
 # git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git || git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git 
 git checkout release
 
+# Get the current OS and architecture
+OS_ARCH=$(get_os_arch)
+
+# Fetch the list of files from the release page
+FILES=$(curl -s $BASE_URL | grep -oE "node-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+
+
+# Change to the download directory
+cd ~/ceremonyclient/node
+
+# Download each file
+for file in $FILES; do
+    echo "Downloading $file..."
+    wget "https://releases.quilibrium.com/$file"
+    
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded $file"
+    else
+        echo "Failed to download $file"
+    fi
+    
+    echo "------------------------"
+done
+
+
+
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
 OS=$(uname -s)
@@ -105,11 +123,11 @@ if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-amd64"
         GO_BINARY="go1.22.4.linux-amd64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-linux-amd64"
+        QCLIENT_BINARY="qclient-2.0.0-linux-amd64"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-amd64"
         GO_BINARY="go1.22.44.linux-amd64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-darwin-arm64"
+        QCLIENT_BINARY="qclient-2.0.0-darwin-arm64"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
@@ -118,17 +136,43 @@ elif [ "$ARCH" = "aarch64" ]; then
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-arm64"
         GO_BINARY="go1.22.4.linux-arm64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-linux-arm64"
+        QCLIENT_BINARY="qclient-2.0.0-linux-arm64"
     fi
 fi
 
 # Step 4:Download qClient
 echo "⏳Downloading qClient"
 sleep 1  # Add a 1-second delay
+# Get the current OS and architecture
+OS_ARCH=$(get_os_arch)
+
+# Fetch the list of files from the release page
+FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+
+# Change to the download directory
 cd ~/ceremonyclient/client
-wget https://releases.quilibrium.com/$QCLIENT_BINARY
-mv $QCLIENT_BINARY qclient
-chmod +x qclient
+
+# Download each file
+for file in $FILES; do
+    echo "Downloading $file..."
+    wget "https://releases.quilibrium.com/$file"
+    
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded $file"
+    else
+        echo "❌ Error: Failed to download $file"
+        echo "Your node will still work, but you'll need to install the qclient manually later if needed."
+    fi
+    
+    echo "------------------------"
+done
+
+        mv $QCLIENT_BINARY qclient
+        chmod +x qclient
+        echo "✅ qClient binary downloaded and configured successfully."
+
+echo
 
 # Step 5:Determine the ExecStart line based on the architecture
 # Get the current user's home directory
@@ -136,7 +180,7 @@ HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/release_autorun.sh"
+EXEC_START="$NODE_PATH/$NODE_BINARY"
 
 # Step 6:Create Ceremonyclient Service
 echo "⏳ Creating Ceremonyclient Service"

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-VERSION="1.4.21.1"
+
+VERSION="2.0.0.1"
+
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
+echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are upgrading your Quilibrium Node to v$VERSION!"
 echo "The script is prepared for Ubuntu machines. If you are using another operating system, please check the compatibility of the script."
 echo "⏳Processing..."
@@ -12,6 +14,20 @@ sleep 5  # Add a 5-second delay
 # Stop the ceremonyclient service
     echo "Updating node..."
     service ceremonyclient stop
+    echo "⏳ Stopping the ceremonyclient service if it exists..."
+if systemctl is-active --quiet ceremonyclient; then
+    if sudo systemctl stop ceremonyclient; then
+        echo "🔴 Service stopped successfully."
+        echo
+    else
+        echo "❌ Failed to stop the ceremonyclient service." >&2
+        echo
+    fi
+else
+    echo "ℹ️ Ceremonyclient service is not active or does not exist."
+    echo
+fi
+sleep 1
 
 # apt install cpulimit -y
 # apt install gawk -y #incase it is not installed
@@ -24,6 +40,35 @@ git checkout main
 git branch -D release
 git pull
 git checkout release
+echo "✅ Downloaded the latest changes successfully."
+echo
+
+# Get the current OS and architecture
+OS_ARCH=$(get_os_arch)
+
+# Fetch the list of files from the release page
+FILES=$(curl -s $BASE_URL | grep -oE "node-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+
+
+# Change to the download directory
+cd ~/ceremonyclient/node
+
+# Download each file
+for file in $FILES; do
+    echo "Downloading $file..."
+    wget "https://releases.quilibrium.com/$file"
+    
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded $file"
+    else
+        echo "Failed to download $file"
+    fi
+    
+    echo "------------------------"
+done
+
+
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)
@@ -34,11 +79,11 @@ if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
         NODE_BINARY="node-$VERSION-linux-amd64"
         GO_BINARY="go1.22.4.linux-amd64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-linux-amd64"
+        QCLIENT_BINARY="qclient-2.0.0-linux-amd64"
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-amd64"
         GO_BINARY="go1.22.44.linux-amd64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-darwin-arm64"
+        QCLIENT_BINARY="qclient-2.0.0-darwin-arm64"
     fi
 elif [ "$ARCH" = "aarch64" ]; then
     if [ "$OS" = "Linux" ]; then
@@ -47,25 +92,49 @@ elif [ "$ARCH" = "aarch64" ]; then
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY="node-$VERSION-darwin-arm64"
         GO_BINARY="go1.22.4.linux-arm64.tar.gz"
-        QCLIENT_BINARY="qclient-1.4.19.1-linux-arm64"
+        QCLIENT_BINARY="qclient-2.0.0-linux-arm64"
     fi
 fi
 
 # Step 4:Update qClient
-echo "Updating qClient"
-sleep 1  # Add a 1-second delay
+
+# Get the current OS and architecture
+OS_ARCH=$(get_os_arch)
+
+# Fetch the list of files from the release page
+FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+
+# Change to the download directory
 cd ~/ceremonyclient/client
-rm -f qclient
-wget https://releases.quilibrium.com/$QCLIENT_BINARY
-mv $QCLIENT_BINARY qclient
-chmod +x qclient
+
+# Download each file
+for file in $FILES; do
+    echo "Downloading $file..."
+    wget "https://releases.quilibrium.com/$file"
+    
+    # Check if the download was successful
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded $file"
+    else
+        echo "❌ Error: Failed to download $file"
+        echo "Your node will still work, but you'll need to install the qclient manually later if needed."
+    fi
+    
+    echo "------------------------"
+done
+
+        mv $QCLIENT_BINARY qclient
+        chmod +x qclient
+        echo "✅ qClient binary downloaded and configured successfully."
+
+echo
 
 # Get the current user's home directory
 HOME=$(eval echo ~$HOME_DIR)
 
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/release_autorun.sh"
+EXEC_START="$NODE_PATH/$NODE_BINARY"
 
 # Re-Create Ceremonyclient Service
 echo "⏳ Re-Creating Ceremonyclient Service"
@@ -111,10 +180,10 @@ echo "✅ Starting Ceremonyclient Service"
 sleep 2  # Add a 2-second delay
 sudo systemctl daemon-reload
 sudo systemctl enable ceremonyclient
-sudo service ceremonyclient start
+sudo systemctl start ceremonyclient
 
 # See the logs of the ceremonyclient service
 echo "🎉 Welcome to Quilibrium Ceremonyclient v$VERSION"
 echo "⏳ Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
-sleep 5  # Add a 5-second delay
+sleep 2  # Add a 2-second delay
 sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat

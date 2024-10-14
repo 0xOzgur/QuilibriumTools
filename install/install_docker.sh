@@ -3,7 +3,7 @@
 cd ~
 
 # Step 0: Welcome
-echo "This script is made with ❤️ by 0xOzgur.eth @ https://quilibrium.space"
+echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"
 echo "⏳Enjoy and sit back while you are building your Quilibrium Ceremony Client!"
 echo "⏳Processing..."
 sleep 10  # Add a 10-second delay
@@ -61,7 +61,8 @@ git checkout release-cdn
 echo "⏳Building Ceremonyclient Container"
 sleep 2  # Add a 2-second delay
 
-docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium:1.4.21.1 .1.4.21.1
+docker build --build-arg GIT_COMMIT=$(git log -1 --format=%h) -t quilibrium:2.0 .2.0
+
 
 
 # Step 8:Run Ceremonyclient Container

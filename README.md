@@ -20,12 +20,15 @@ After first run, when you need to reach your node, you need to run only;
 
 Use below command to install v2.0
 
+
     wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/install/install_quilibrium_service.sh | bash
 
     
 **Autoupdater**
 
+
 If you need to update your node from previous version to 2.0, apply below command
+
 
     wget -O - https://raw.githubusercontent.com/0xOzgur/QuilibriumTools/main/update/update.sh | bash
 

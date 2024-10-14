@@ -28,6 +28,7 @@ OS=$(uname -s)
 # Determine the node binary name based on the architecture and OS
 if [ "$ARCH" = "x86_64" ]; then
     if [ "$OS" = "Linux" ]; then
+
         NODE_BINARY='node-2.0-linux-amd64'
     elif [ "$OS" = "Darwin" ]; then
         NODE_BINARY='node-2.0-darwin-amd64'

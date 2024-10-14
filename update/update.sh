@@ -1,6 +1,8 @@
 #!/bin/bash
 
+
 VERSION="2.0.0.1"
+
 
 # Step 0: Welcome
 echo "This script is made with ❤️ by 0xOzgur @ https://quilibrium.space"

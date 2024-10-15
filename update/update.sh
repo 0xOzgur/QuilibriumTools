@@ -161,7 +161,7 @@ OS_ARCH=$(get_os_arch)
 BASE_URL="https://releases.quilibrium.com/qclient-release"
 
 # Fetch the list of files from the release page
-FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
+FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
 
 # Change to the download directory
 cd ~/ceremonyclient/client

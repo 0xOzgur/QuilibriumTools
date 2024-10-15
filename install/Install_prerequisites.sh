@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the version number
-VERSION="2.0.0.5"
+VERSION="2.0.0.4"
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)

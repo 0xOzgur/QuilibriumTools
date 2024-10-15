@@ -1,8 +1,8 @@
 #!/bin/bash
 # Set the version number
 
-VERSION="2.0.0.5"
-qClientVERSION="2.0.0.5"
+VERSION="2.0.0.4"
+qClientVERSION="2.0.0.4"
 
 cd ~
 # Step 0: Welcome

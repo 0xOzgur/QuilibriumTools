@@ -134,6 +134,24 @@ elif [ "$ARCH" = "aarch64" ]; then
     fi
 fi
 
+get_os_arch() {
+    local os=$(uname -s | tr '[:upper:]' '[:lower:]')
+    local arch=$(uname -m)
+
+    case "$os" in
+        linux|darwin) ;;
+        *) echo "Unsupported operating system: $os" >&2; return 1 ;;
+    esac
+
+    case "$arch" in
+        x86_64|amd64) arch="amd64" ;;
+        arm64|aarch64) arch="arm64" ;;
+        *) echo "Unsupported architecture: $arch" >&2; return 1 ;;
+    esac
+
+    echo "${os}-${arch}"
+}
+
 # Step 4:Update qClient
 
 # Get the current OS and architecture
@@ -164,7 +182,6 @@ for file in $FILES; do
     echo "------------------------"
 done
 
-        //
         chmod +x qclient*
         echo "✅ qClient binary downloaded and configured successfully."
 

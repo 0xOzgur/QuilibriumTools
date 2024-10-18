@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-VERSION="2.0.0.7"
+VERSION="2.0.0.8"
 qClientVERSION="2.0.0.5"
 
 

@@ -119,9 +119,6 @@ NODE_PATH="$HOME/testnet/ceremonyclient/node"
 EXEC_START="$NODE_PATH/$NODE_BINARY"
 
 # Step 6:Create Ceremonyclient Service
-echo "⏳ Creating Ceremonyclient Testnet Service"
-sleep 2  # Add a 2-second delay
-
 echo "⏳ Stopping Ceremonyclient Service"
 service ceremonyclient stop
 sleep 2  # Add a 2-second delay
@@ -159,7 +156,7 @@ echo "🎉Welcome to Quilibrium Ceremonyclient VERSION"
 echo "⏳Please let it flow node logs at least 5 minutes then you can press CTRL + C to exit the logs."
 sleep 30  # Add a 5-second delay
 
-CONFIG_FILE="$HOME/ceremonyclient/node/.config/config.yml"
+CONFIG_FILE="$HOME/testnet/ceremonyclient/node/.config/config.yml"
 
 # Backup the original file
 cp "$CONFIG_FILE" "${CONFIG_FILE}.bak"

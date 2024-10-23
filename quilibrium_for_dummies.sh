@@ -7,8 +7,8 @@ clear
 
 # Set the version number
 
-VERSION="2.0.0.8"
-qClientVERSION="2.0.0.5"
+VERSION="2.0.1"
+qClientVERSION="2.0.1"
 
 
 # Determine the ExecStart line based on the architecture

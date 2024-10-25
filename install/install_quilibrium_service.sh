@@ -2,7 +2,7 @@
 # Set the version number
 
 VERSION="2.0.2"
-qClientVERSION="2.0.2"
+qClientVERSION="2.0.1"
 
 cd ~
 # Step 0: Welcome

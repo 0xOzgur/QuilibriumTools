@@ -129,7 +129,7 @@ GOEXPERIMENT=arenas go build -o qclient main.go
 HOME=$(eval echo ~$HOME_DIR)
 # Use the home directory in the path
 NODE_PATH="$HOME/ceremonyclient/node"
-EXEC_START="$NODE_PATH/release_autorun.sh"
+EXEC_START="$NODE_PATH/$NODE_BINARY"
 
 # Create Ceremonyclient Service
 echo "⏳Creating Ceremonyclient Service"

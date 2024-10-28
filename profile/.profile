@@ -17,15 +17,6 @@ alias wttr='curl wttr.in'
 
 neofetch
 
-# Shortcuts for Docker
-alias dpeer-count='cd ~/ceremonyclient/ && docker compose exec node grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l'
-alias dnode-info='cd ~/ceremonyclient/ && docker compose exec node node -node-info && cd ~'
-alias ddb-console='cd ~/ceremonyclient/ && - docker compose exec node node --db-console && cd ~'
-alias dbalance='cd ~/ceremonyclient/ && docker compose exec node node -balance && cd ~'
-alias dlog='cd ~/ceremonyclient/ && docker compose logs -f -n, --tail 100 && cd ~'
-alias dstart='cd ~/ceremonyclient/ && docker compose up -d && cd ~'
-alias drestart='cd ~/ceremonyclient/ && docker compose down && docker compose up -d && cd ~'
-alias dstop='cd ~/ceremonyclient/ && docker compose down && cd ~'
 # Shortcuts for Service
 alias peer-count="cd ~/ceremonyclient/node && grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l && cd ~"
 alias node-info="cd ~/ceremonyclient/node && ./node-2.0.2.2-linux-amd64 -node-info && cd ~"
@@ -39,3 +30,17 @@ alias nstop="service ceremonyclient stop"
 alias benchmark='increment=$(journalctl -u ceremonyclient -ocat -n 100 | grep increment | awk -F'\[:,\}\]' '\''{for(i=1;i<=NF;i++){if($i~"increment"){gsub(/[ "]/,"",$i); print $(i+1)}}}'\'' | tail -n 1) && difficulty=$(expr 200000 - $increment / 4) && cpus=$(nproc) && score=$(echo "scale=2; ($cpus*$cpus*1000)/$difficulty" | bc) && echo "" && echo "CPU(s): $cpus" && echo "Increment: $increment" && echo "Difficulty: $difficulty" && echo "Score: $score"'
 alias qbalance="cd ~/ceremonyclient/client && ./qclient-2.0.1-linux-amd64 token balance --config ../node/.config/ && cd ~"
 alias mincrement="journalctl -u ceremonyclient.service -f --no-hostname -o cat -g "publishing proof batch" -n 1000"
+alias qnode="cd ~/ceremonyclient/node"
+alias client="cd ~/ceremonyclient/client"
+
+
+
+# Shortcuts for Docker
+alias dpeer-count='cd ~/ceremonyclient/ && docker compose exec node grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l'
+alias dnode-info='cd ~/ceremonyclient/ && docker compose exec node node -node-info && cd ~'
+alias ddb-console='cd ~/ceremonyclient/ && - docker compose exec node node --db-console && cd ~'
+alias dbalance='cd ~/ceremonyclient/ && docker compose exec node node -balance && cd ~'
+alias dlog='cd ~/ceremonyclient/ && docker compose logs -f -n, --tail 100 && cd ~'
+alias dstart='cd ~/ceremonyclient/ && docker compose up -d && cd ~'
+alias drestart='cd ~/ceremonyclient/ && docker compose down && docker compose up -d && cd ~'
+alias dstop='cd ~/ceremonyclient/ && docker compose down && cd ~'

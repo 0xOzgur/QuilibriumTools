@@ -121,7 +121,7 @@ git checkout release-cdn
 # Build Ceremonyclient qClient
 echo "⏳Building qCiient"
 sleep 1  # Add a 1-second delay
-cd ~/ceremonyclient/client
+cd ~/ceremonyclient/node
 GOEXPERIMENT=arenas go build -o qclient main.go
 
 # Step 5:Determine the ExecStart line based on the architecture

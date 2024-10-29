@@ -164,7 +164,7 @@ BASE_URL="https://releases.quilibrium.com/qclient-release"
 FILES=$(curl -s $BASE_URL | grep -oE "qclient-[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?-${OS_ARCH}(\.dgst)?(\.sig\.[0-9]+)?")
 
 # Change to the download directory
-cd ~/ceremonyclient/client
+cd ~/ceremonyclient/node
 
 # Download each file
 for file in $FILES; do

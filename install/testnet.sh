@@ -2,7 +2,7 @@
 # Set the version number
 
 VERSION="2.0.3-b5-testnet"
-qClientVERSION="2.0.2.4-testnet"
+qClientVERSION="2.0.2.4"
 
 cd ~
 # Step 0: Welcome

@@ -54,13 +54,12 @@ fi
 sudo sysctl -p
 
 # Step 4:Download Ceremonyclient
-echo "⏳Downloading Ceremonyclient"
+echo "⏳Creating Testnet Directories"
 sleep 1  # Add a 1-second delay
 mkdir testnet
 cd ~/testnet
-git clone https://github.com/QuilibriumNetwork/ceremonyclient.git
+mkdir ceremonyclient
 cd ~/testnet/ceremonyclient/
-git checkout release
 
 # Determine the ExecStart line based on the architecture
 ARCH=$(uname -m)

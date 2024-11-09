@@ -1,7 +1,7 @@
 #!/bin/bash
 # Set the version number
 
-VERSION="2.0.3-b6-testnet"
+VERSION="2.0.3-b7-testnet"
 qClientVERSION="2.0.2.4"
 
 cd ~

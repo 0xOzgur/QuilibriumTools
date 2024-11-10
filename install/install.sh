@@ -156,7 +156,7 @@ RestartSec=5s
 WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START
 KillSignal=SIGINT
-TimeoutStopSec=30s
+TimeoutStopSec=75s
 
 [Install]
 WantedBy=multi-user.target

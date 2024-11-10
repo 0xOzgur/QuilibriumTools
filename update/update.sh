@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-VERSION="2.0.2.4"
-qClientVERSION="2.0.2.4"
+VERSION="2.0.3"
+qClientVERSION="2.0.3"
 
 
 # Step 0: Welcome
@@ -219,7 +219,7 @@ RestartSec=5s
 WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START
 KillSignal=SIGINT
-TimeoutStopSec=30s
+TimeoutStopSec=75s
 
 [Install]
 WantedBy=multi-user.target

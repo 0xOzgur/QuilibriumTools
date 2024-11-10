@@ -2,7 +2,7 @@
 # Set the version number
 
 VERSION="2.0.3-b7-testnet"
-qClientVERSION="2.0.2.4"
+qClientVERSION="2.0.3"
 
 cd ~
 # Step 0: Welcome
@@ -136,7 +136,7 @@ RestartSec=5s
 WorkingDirectory=$NODE_PATH
 ExecStart=$EXEC_START --signature-check=false --network=1
 KillSignal=SIGINT
-TimeoutStopSec=30s
+TimeoutStopSec=75s
 
 [Install]
 WantedBy=multi-user.target

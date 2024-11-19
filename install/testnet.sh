@@ -1,8 +1,8 @@
 #!/bin/bash
 # Set the version number
 
-VERSION="2.0.3-b7-testnet"
-qClientVERSION="2.0.3"
+VERSION="2.0.4-b7-testnet"
+qClientVERSION="2.0.4"
 
 cd ~
 # Step 0: Welcome

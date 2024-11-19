@@ -61,11 +61,11 @@ do
         cd ~/ceremonyclient/node
 
         # Run the token balance command and filter for the Total balance line
-        total_balance=$(./qclient-2.0.3-linux-amd64 token balance | grep -oP 'Total balance: \K[0-9.]+')
+        total_balance=$(./qclient-2.0.4-linux-amd64 token balance | grep -oP 'Total balance: \K[0-9.]+')
         echo "Total balance: $total_balance"
 
         # Run the node-info command and filter for specific lines
-        node_info=$(./node-2.0.3.4-linux-amd64 -node-info)
+        node_info=$(./node-2.0.4-linux-amd64 -node-info)
         seniority=$(echo "$node_info" | grep -oP 'Seniority: \K[0-9]+')
         prover_ring=$(echo "$node_info" | grep 'Prover Ring')
         owned_balance=$(echo "$node_info" | grep 'Owned balance')

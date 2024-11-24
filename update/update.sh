@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-VERSION="2.0.4"
-qClientVERSION="2.0.4"
+VERSION="2.0.4.1"
+qClientVERSION="2.0.4.1"
 
 
 # Step 0: Welcome

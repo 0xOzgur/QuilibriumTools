@@ -35,14 +35,14 @@ sleep 1
 
 # Download Binary
 echo "⏳ Downloading New Release v$VERSION"
-cd  ~/ceremonyclient
-git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git
-git checkout main
-git branch -D release
-git pull
-git checkout release
-echo "✅ Github repo updated to the latest changes successfully."
-echo
+# cd  ~/ceremonyclient
+# git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git
+# git checkout main
+# git branch -D release
+# git pull
+# git checkout release
+# echo "✅ Github repo updated to the latest changes successfully."
+# echo
 
 #==========================
 # NODE BINARY DOWNLOAD

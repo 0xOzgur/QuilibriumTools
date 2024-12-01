@@ -73,20 +73,20 @@ if [ -d ~/ceremonyclient ]; then
 fi
 
 # Step 4:Download Ceremonyclient
-echo "⏳Downloading Ceremonyclient"
-sleep 1  # Add a 1-second delay
-cd ~
-if [ -d "ceremonyclient" ]; then
-  echo "Directory ceremonyclient already exists, skipping git clone..."
-else
-  until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git || git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git; do
-    echo "Git clone failed, retrying..."
-    sleep 2
-  done
-fi
-cd ~/ceremonyclient/
+# echo "⏳Downloading Ceremonyclient"
+# sleep 1  # Add a 1-second delay
+# cd ~
+# if [ -d "ceremonyclient" ]; then
+#   echo "Directory ceremonyclient already exists, skipping git clone..."
+# else
+#   until git clone https://github.com/QuilibriumNetwork/ceremonyclient.git || git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git; do
+#     echo "Git clone failed, retrying..."
+#     sleep 2
+#   done
+# fi
+# cd ~/ceremonyclient/
 # git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git || git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git 
-git checkout release
+# git checkout release
 
 #==========================
 # NODE BINARY DOWNLOAD

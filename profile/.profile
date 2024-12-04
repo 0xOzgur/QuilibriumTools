@@ -19,9 +19,9 @@ neofetch
 
 # Shortcuts for Service
 alias peer-count="cd ~/ceremonyclient/node && grpcurl -plaintext -max-msg-sz 150000000 localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep peerId | wc -l && cd ~"
-alias node-info="cd ~/ceremonyclient/node && ./node-2.0.4.2-linux-amd64 -node-info && cd ~"
-alias db-console="cd ~/ceremonyclient/node && ./node-2.0.4.2-linux-amd64 --db-console && cd ~"
-alias balance="cd ~/ceremonyclient/node && ./node-2.0.4.2-linux-amd64 -balance && cd ~"
+alias node-info="cd ~/ceremonyclient/node && ./node-2.0.5-linux-amd64 -node-info && cd ~"
+alias db-console="cd ~/ceremonyclient/node && ./node-2.0.5-linux-amd64 --db-console && cd ~"
+alias balance="cd ~/ceremonyclient/node && ./node-2.0.5-linux-amd64 -balance && cd ~"
 alias nlog="sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat"
 alias increment="sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat | grep time_taken"
 alias frame="sudo journalctl -u ceremonyclient.service -f --no-hostname -o cat | grep frame_number"

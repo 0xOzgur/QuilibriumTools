@@ -7,7 +7,7 @@ clear
 
 # Set the version number
 
-VERSION="2.0.4.2"
+VERSION="2.0.5"
 qClientVERSION="2.0.4.1"
 
 

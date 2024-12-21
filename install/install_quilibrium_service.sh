@@ -1,7 +1,7 @@
 #!/bin/bash
 # Set the version number
 
-VERSION="2.0.5"
+VERSION="2.0.5.1"
 qClientVERSION="2.0.4.1"
 
 cd ~
@@ -87,6 +87,8 @@ fi
 # cd ~/ceremonyclient/
 # git remote set-url origin https://github.com/QuilibriumNetwork/ceremonyclient.git || git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git 
 # git checkout release
+
+mkdir ceremonyclient/node
 
 #==========================
 # NODE BINARY DOWNLOAD

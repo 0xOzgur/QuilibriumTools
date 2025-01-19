@@ -1,7 +1,7 @@
 #!/bin/bash
 # Set the version number
 
-VERSION="2.0.5.1"
+VERSION="2.0.6.2"
 qClientVERSION="2.0.4.1"
 
 cd ~
